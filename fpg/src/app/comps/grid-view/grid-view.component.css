@@ -1,0 +1,45 @@
+.grid-container .design-card{
+    position: relative;
+    overflow: hidden;
+    padding: 0px;
+    transition: all 1s ease-in-out;
+    height: 200px;
+    cursor: pointer;
+}
+
+.grid-container .design-card:hover{
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+.grid-container .design-card img{
+ width: 100%;
+}
+
+.grid-container .design-card h6{
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(0,0,0,0.4);
+    color:white;
+    padding: 10px 5px;
+    margin-bottom: 0px;
+    width: 100%;
+}
+
+.grid-container .row:nth-child(odd) .design-card:nth-child(odd){
+    background: #ccc;
+    
+}
+.grid-container .row:nth-child(odd) .design-card:nth-child(even){
+    background: #666;
+    
+}
+.grid-container .row:nth-child(even) .design-card:nth-child(odd){
+    background: #666;
+    
+}
+.grid-container .row:nth-child(even) .design-card:nth-child(even){
+    background: #ccc;
+    
+}

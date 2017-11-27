@@ -1,0 +1,47 @@
+<div class="container-fluid">
+<h2 class="pdT50">Create Design</h2>
+<div>
+    <form name="create-design">
+        <div class="form-group">
+            <label class="text-success"  for="file"><strong>File</strong></label>
+            <input type="file" class="form-control" id="file">
+        </div>
+        <div class="form-group">
+            <label class="text-success"  for="type"><strong>Type</strong></label>
+            <select class="form-control">
+                <option *ngFor="let opt of DesignType" value="{{opt}}">{{opt}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="text-success"  for="heading"><strong>Heading</strong></label>
+            <input [(ngModel)]="designItem.heading" name="heading"  type="text" class="form-control" id="heading" placeholder="Put heading of image">
+        </div>
+        <div class="form-group">
+            <label class="text-success"  for="notes"><strong>Notes</strong></label>
+            <input [(ngModel)]="designItem.notes" name="notes" type="text" class="form-control" id="notes" placeholder="Put notes of image">
+        </div>
+        <div class="form-group">
+            <label class="text-success"  for="desc"><strong>Description</strong></label>
+            <input [(ngModel)]="designItem.description" name="desc" type="text" class="form-control" id="desc" placeholder="Put description of image">
+        </div>
+        <div class="form-group">
+            <label class="text-success"  for="colors"><strong>Colors</strong></label>
+            <input [(ngModel)]="designItem.colors" name="colors" type="text" class="form-control" id="colors" placeholder="Put colors in comma separated way, like #EFEED, #23EE66 ...">
+        </div>
+        <div>
+            <span *ngFor='let c of designItem.colors;' class="color-box" style="background-color:{{c}};"></span>            
+        </div>
+        <div class="form-group">
+            <label class="text-success"  for="colors"><strong>Tags</strong></label>
+            <input type="text" class="form-control" id="tags" placeholder="Put tags in comma separated way, like #corporate, #colorful, #trendy ...">
+        </div>
+        <div class="form-group">
+            <label class="text-success"  for="grade"><strong>Grade</strong> </label>&nbsp;&nbsp;<span><strong>{{designItem.grade}}</strong></span>
+            <input [(ngModel)]="designItem.grade" name="grade" min="1" max="10" type="range" class="form-control" id="grade">
+        </div>
+        <div class="form-group">
+            <input type="button" class="btn btn-success" value="Post" />
+        </div>
+    </form>
+</div>
+</div>
