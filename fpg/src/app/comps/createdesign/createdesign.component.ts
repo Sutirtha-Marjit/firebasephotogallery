@@ -89,8 +89,10 @@ export class CreatedesignComponent implements OnInit {
 
   public postToFireBase(){
     console.log(JSON.stringify(this.designItem));
-    var ref = this.firebase.app().database().ref();
-    console.log(ref);
+    var designListObject = {meta:{},data:[]};
+    var database = this.firebase.database();
+    var ref = database.ref(this.fbps.getRefString(1)+'/data');
+    ref.push(this.designItem);
   }
 
   ngOnInit() {

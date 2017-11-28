@@ -57,13 +57,15 @@
 <div class="col selected-image" >
     <div>
     <h2 *ngIf="localImageSource.length===0">No image</h2>
-    <img src="{{localImageSource}}" alt="locally selected image" title="Image selected locally"/>    
-    <hr *ngIf="localImageSource.length>0"/>
-    
-    
     <div class="btn-group">
         <a *ngIf="localImageSource.length>0 && physicalImagePath==null" class="btn btn-success" (click)="uploadImage()">Upload to Server</a>
     </div>
+    <hr *ngIf="localImageSource.length>0"/>
+    <img src="{{localImageSource}}" alt="locally selected image" title="Image selected locally"/>    
+    
+    
+    
+    
     </div>
 </div>
 </div>

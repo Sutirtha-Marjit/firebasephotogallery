@@ -3,11 +3,25 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class FireBasePropertiesService {
 
-  constructor() { }
+  private REF:any;
+
+  constructor() {
+    this.REF = {
+      personal:'DESIGN_HUB_TEST_2009D04D02',
+      corporate:'DESIGN_HUB_TEST_2017D04D02',
+    }
+   }
 
   getInstanceOfFireBase():FireBase{
     var fb:FireBase = window['firebase'];
     return fb;
+  }
+
+  getRefString(type:number):string{
+    if(type){
+      return this.REF.personal;
+    }
+    return this.REF.corporate;
   }
 
   getFireBaseConfig():FireBaseConfig{
