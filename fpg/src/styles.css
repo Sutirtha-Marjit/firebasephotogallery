@@ -5,6 +5,10 @@ font-size:0.85rem;
 font-family:arial; 
 }
 
+a.btn{
+    color:white!important;
+}
+
 .pdT50{
 padding-top:50px; 
 }

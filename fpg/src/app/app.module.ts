@@ -8,6 +8,7 @@ import { PageNotFoundComponent } from './comps/page-not-found/page-not-found.com
 import { TableViewComponent } from './comps/table-view/table-view.component';
 import { GridViewComponent } from './comps/grid-view/grid-view.component';
 import { DetailViewComponent } from './comps/detail-view/detail-view.component';
+import {FireBasePropertiesService} from './services/fire-base-properties.service';
 
 const appRoutes: Routes =[
   {path:'create-new-design',component:CreatedesignComponent},
@@ -31,7 +32,9 @@ const appRoutes: Routes =[
     FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [
+    FireBasePropertiesService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
