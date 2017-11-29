@@ -14,7 +14,7 @@ const appRoutes: Routes =[
   {path:'create-new-design',component:CreatedesignComponent},
   {path:'grid-view',component:GridViewComponent},
   {path:'table-view',component:TableViewComponent},
-  {path:'detail-view',component:DetailViewComponent},
+  {path:'detail-view/:id',component:DetailViewComponent},
 ];
 
 
@@ -30,7 +30,7 @@ const appRoutes: Routes =[
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes,{useHash:true})
   ],
   providers: [
     FireBasePropertiesService

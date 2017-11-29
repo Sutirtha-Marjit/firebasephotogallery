@@ -8,22 +8,26 @@
           <th scope="col">Image</th>
           <th scope="col">Heading</th>
           <th scope="col">Desc</th>
+          <th scope="col">Type</th>
           <th scope="col">Note</th>
           <th scope="col">Tags</th>
           <th scope="col">Colors</th>
           <th scope="col">Grade</th>
+          <th scope="col">Date</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td><img  src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Limes.jpg/339px-Limes.jpg" alt="..." class="img-thumbnail table-view"></td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>@mdo</td>
+      <tr [routerLink]="['/detail-view',designEL.id]"  class="designEL-row" *ngFor="let designEL of getRowPackets(); let i=index;">
+        <th scope="row">{{i}}</th>
+        <td><img  src="{{designEL.file}}" alt="{{designEL.heading}}" class="img-thumbnail table-view"></td>
+        <td><h6 class="text-success">{{designEL.heading}}</h6></td>
+        <td>{{designEL.description}}</td>
+        <td>{{designEL.type}}</td>
+        <td>{{designEL.notes}}</td>
+        <td>{{designEL.tags}}</td>
+        <td>{{designEL.colors}}</td>
+        <td>{{designEL.grade}}</td>
+        <td>{{designEL.date}}</td>
       </tr>
       
     </tbody>

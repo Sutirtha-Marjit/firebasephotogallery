@@ -3,7 +3,7 @@
 <div>
 </div>
 </div> 
-
+<!--
 <div class="container-fluid grid-container">
 <div class="row" *ngFor='let row of getRowPackets()'>
     <div id="{{designElement.id}}" class="col design-card" *ngFor='let designElement of row'>
@@ -12,16 +12,68 @@
     </div>
   </div>
 </div>
+-->
 
-<!-- 
-<div class="col design-card">
+<div class="container-fluid grid-container">
+  <div class="row">
+    <div *ngFor="let designCol of getRowPackets(3)" class="col design-col">
+        <div class="design-card" *ngFor="let designEl of designCol" id="{{designEl.id}}">
+          <img src="{{designEl.file}}"/>
+          <div class="detail-shortcut">
+            <h6>{{designEl.heading}}</h6>
+            <p>{{designEl.description}}</p>
+          </div>          
+        </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<div class="container-fluid grid-container">
+  <div class="row">
+    <div class="col design-col"  >
+      <div class="design-card">
+          <img src="https://www.tugraz.at/uploads/pics/Alexander_by_Kanizaj_02.jpg"/>
+          <h6>1 of 3</h6>
+      </div>
+      <div class="design-card">
+        <img src="http://www.goodwp.com/images/201301/goodwp.com_26998.jpg"/>
+        <h6>lolol</h6>
+      </div>
+    </div>
+    <div class="col  design-col">
+      <div class="design-card">
+          <img src="https://www.tugraz.at/uploads/pics/Alexander_by_Kanizaj_02.jpg"/>
+          <h6>1 of 3</h6>
+      </div>
+    </div>
+    <div class="col  design-col">
+      <div class="design-card">
+          <img src="https://www.tugraz.at/uploads/pics/Alexander_by_Kanizaj_02.jpg"/>
+          <h6>1 of 3</h6>
+      </div>
+    </div>
+    <div class="col  design-col">
+      <div class="design-card">
+          <img src="https://www.tugraz.at/uploads/pics/Alexander_by_Kanizaj_02.jpg"/>
+          <h6>1 of 3</h6>
+      </div>
+    </div>
+  </div>  
+</div>
+-->
+
+   <!--
+   <div class="col design-card">
       <img src="https://www.tugraz.at/uploads/pics/Alexander_by_Kanizaj_02.jpg"/>
       <h6>1 of 3</h6>
     </div>
+    
     <div class="col design-card">
       <img src="https://www.ericsson.com/assets/global/scaled/_dsc7147_retouched_1440x810_90_241844.jpg"/>
       <h6>1 of 3</h6>
     </div>
+    
     <div class="col design-card">
       <img src="http://fabriccreative.com/wp-content/uploads/2014/05/grace-face-5.jpg"/>
       <h6>1 of 3</h6>
@@ -30,5 +82,7 @@
     <div class="col design-card">
       3 of 3
     </div>
+    
+    -->
 
-  -->
+  

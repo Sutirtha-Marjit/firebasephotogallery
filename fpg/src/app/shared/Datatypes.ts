@@ -6,7 +6,7 @@ export interface DesignItem{
     colors:Array<string>,
     type:string,
     tags:Array<string>,
-    date:Date,
+    date:any,
     grade:number,
     file:string
 }

@@ -21,11 +21,34 @@ export class GridViewComponent implements OnInit {
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
 
     base.FireBaseDataREF.once('value').then(function(snapShot){
-      base.ListOfDesign = snapShot.val();       
+      base.ListOfDesign = snapShot.val();  
+      console.log(base.ListOfDesign);
+           
     });
 
    }
+  
 
+  public getRowPackets(numOfCols:number):Array<any>{
+
+    var set = 0,
+    pack = [];
+
+    for (var el in this.ListOfDesign) {
+        
+        
+        if(pack[set]===undefined){
+          pack[set] = [];
+        }
+        this.ListOfDesign[el].id = el;
+        pack[set].push(this.ListOfDesign[el]);
+        set === numOfCols - 1 ? (set = 0) : set++;
+   }
+    console.log(pack);
+    return pack;
+  }
+
+  /*
    public getRowPackets():Array<any>{
      var tempContainer=null,i=0;
      var pack=[];
@@ -44,7 +67,7 @@ export class GridViewComponent implements OnInit {
      }
     
     return pack;
-   }
+   } */
 
   ngOnInit() {
 

@@ -5,10 +5,20 @@
 <div class="col">
     <p>Please remember if you enter wrong info, website will populate wrong information accordingly.  Understand each field carefully and insert correct data.</p>
     <form name="create-design">
-        <div class="form-group" *ngIf="(physicalImagePath==null)">
+        <div class="image-selection-group" *ngIf="(physicalImagePath==null)">
+        <div class="form-group">
             <label class="text-success"  for="file"><strong>File</strong></label>
             <input type="file" (change)="processImageAndShow()" class="form-control" id="file">
         </div>
+        <h4>or</h4>
+        <a class="btn btn-success">Choose design from uploaded pool</a>
+        <h4>or</h4>
+        <div style="padding:10px; border-radius:8px; background:#f2f2f2;">
+        <input class="form-control form-control-lg" type="text" placeholder="Paste design URL here"/><br/>
+        <a class="btn btn-sm btn-success">Update it</a>
+        </div>
+        </div>
+
         <div class="form-group" *ngIf="physicalImagePath">
             <h5>Uploaded in this following place</h5>
             <a href="{{physicalImagePath}}"><span class="text-primary">{{physicalImagePath}}</span></a>
@@ -58,6 +68,8 @@
     <div>
     <h2 *ngIf="localImageSource.length===0">No image</h2>
     <div class="btn-group">
+        
+        <!-- <a *ngIf="localImageSource.length>0 && physicalImagePath==null" class="btn btn-danger" (click)="cleanLocalImageSelection()">Clear</a> -->
         <a *ngIf="localImageSource.length>0 && physicalImagePath==null" class="btn btn-success" (click)="uploadImage()">Upload to Server</a>
     </div>
     <hr *ngIf="localImageSource.length>0"/>

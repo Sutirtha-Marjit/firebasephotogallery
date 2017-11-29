@@ -1,3 +1,12 @@
 .img-thumbnail.table-view{
     width:100px;
 }
+
+.designEL-row{
+    cursor: pointer;
+    transition: all 1s ease-out;
+}
+
+.designEL-row:hover{
+    background: #cccccc;
+}

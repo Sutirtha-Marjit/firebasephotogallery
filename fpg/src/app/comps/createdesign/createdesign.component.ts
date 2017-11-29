@@ -23,7 +23,7 @@ export class CreatedesignComponent implements OnInit {
   private FireBaseDataREF:any = null;
  
   private fileReader:FileReader;
-  private testDefaultImageSource = "https://www.hdwallpapers.in/walls/boat_sea_beach-normal.jpg";
+  private testDefaultImageSource = "https://cdn.slidesharecdn.com/ss_thumbnails/ebr-issue4-2015-developing-an-operator-iot-ecosystem-170216165602-thumbnail-4.jpg?cb=1487264267";
 
   constructor(private fbps:FireBasePropertiesService) { 
     var base = this;
@@ -45,17 +45,21 @@ export class CreatedesignComponent implements OnInit {
       colors:['#990022','#005500'],
       type:'Poster',
       tags:[],
-      date:new Date(),
+      date:new Date().getTime(),
       grade:1,
       file:''
     };
 
     this.tempColorListString = this.designItem.colors.toString();
-    this.fileReader.onload = function(e:any){
-      base.imageSelectedLocal = true;
-      base.localImageSource = e.target.result;
+    this.fileReader.onload = function(e:any){      
+      base.updateLocalImageSource(e.target.result);
     };
     
+  }
+
+  updateLocalImageSource(source:any){
+    this.imageSelectedLocal = true;
+    this.localImageSource = source;
   }
 
   public uploadImage(){
@@ -97,7 +101,8 @@ export class CreatedesignComponent implements OnInit {
   }
 
   public postToFireBase(){
-    console.log(JSON.stringify(this.designItem));    
+    console.log(this.designItem);  
+      
     this.FireBaseDataREF.push(this.designItem).then(function(){
       alert('Your Data Saved');
     })
