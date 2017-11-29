@@ -5,8 +5,16 @@
 </div> 
 
 <div class="container-fluid grid-container">
-<div class="row">
-    <div class="col design-card">
+<div class="row" *ngFor='let row of getRowPackets()'>
+    <div id="{{designElement.id}}" class="col design-card" *ngFor='let designElement of row'>
+        <img src="{{designElement.file}}"/>
+        <h6>{{designElement.heading}}</h6>
+    </div>
+  </div>
+</div>
+
+<!-- 
+<div class="col design-card">
       <img src="https://www.tugraz.at/uploads/pics/Alexander_by_Kanizaj_02.jpg"/>
       <h6>1 of 3</h6>
     </div>
@@ -22,5 +30,5 @@
     <div class="col design-card">
       3 of 3
     </div>
-  </div>
-</div>
+
+  -->

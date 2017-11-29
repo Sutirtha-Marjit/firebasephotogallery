@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { DesignItem } from '../../shared/Datatypes';
+import {FormControl} from '@angular/forms'
+import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
 
 @Component({
   selector: 'app-table-view',
@@ -7,7 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TableViewComponent implements OnInit {
 
-  constructor() { }
+    public firebase:FireBase;
+  public ListOfDesign:Array<any>=[];
+  private FireBaseDataREF:any = null;
+ 
+  constructor(private fbps:FireBasePropertiesService) {
+    var base = this;
+    this.firebase = fbps.getInstanceOfFireBase();
+    base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
+
+    base.FireBaseDataREF.once('value').then(function(snapShot){
+      base.ListOfDesign = snapShot.val();       
+    });
+
+   }
 
   ngOnInit() {
   }

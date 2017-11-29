@@ -20,14 +20,23 @@ export class CreatedesignComponent implements OnInit {
   public colorBoxContainer:Element = null;
   public localImageSource:string = '';
   public physicalImagePath = null;
+  private FireBaseDataREF:any = null;
  
   private fileReader:FileReader;
+  private testDefaultImageSource = "https://www.hdwallpapers.in/walls/boat_sea_beach-normal.jpg";
 
   constructor(private fbps:FireBasePropertiesService) { 
     var base = this;
+    this.firebase = fbps.getInstanceOfFireBase();
+    base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
+    /*base.FireBaseDataREF.on('value').then(function(snapshot){
+      console.log(snapshot.val());
+    });*/
+    
+
     this.fileReader = new FileReader();
     this.DesignType = ["Poster","Webapp","App","Brochure","Flyer","Business Identity"];
-    this.firebase = fbps.getInstanceOfFireBase();
+    
 
     this.designItem = {
       heading:'Some heading',
@@ -53,8 +62,8 @@ export class CreatedesignComponent implements OnInit {
     var base = this;
       setTimeout(function(){
         base.imageSelected = true;
-        base.physicalImagePath = "http://www.pangeacc.com/wp-content/uploads/2014/12/focus-1024x672.jpg";
-        base.designItem.file = "http://www.pangeacc.com/wp-content/uploads/2014/12/focus-1024x672.jpg";
+        base.physicalImagePath = base.testDefaultImageSource;
+        base.designItem.file = base.testDefaultImageSource;
       },1000);
       
   }
@@ -88,11 +97,10 @@ export class CreatedesignComponent implements OnInit {
   }
 
   public postToFireBase(){
-    console.log(JSON.stringify(this.designItem));
-    var designListObject = {meta:{},data:[]};
-    var database = this.firebase.database();
-    var ref = database.ref(this.fbps.getRefString(1)+'/data');
-    ref.push(this.designItem);
+    console.log(JSON.stringify(this.designItem));    
+    this.FireBaseDataREF.push(this.designItem).then(function(){
+      alert('Your Data Saved');
+    })
   }
 
   ngOnInit() {
