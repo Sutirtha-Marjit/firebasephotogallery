@@ -21,13 +21,21 @@ export class GridViewComponent implements OnInit {
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
 
     base.FireBaseDataREF.once('value').then(function(snapShot){
-      base.ListOfDesign = snapShot.val();  
-      console.log(base.ListOfDesign);
-           
+      console.log('once value event fired');
+      base.ListOfDesign = snapShot.val(); 
+    });
+
+    base.FireBaseDataREF.on('value',function(snapShot){
+        base.ListOfDesign = snapShot.val(); 
     });
 
    }
   
+  public removeDesign(id:string){
+      if(confirm('Are you sure you want to delete this design')){
+        this.FireBaseDataREF.child(id).remove();      
+      }      
+  }
 
   public getRowPackets(numOfCols:number):Array<any>{
 
@@ -44,7 +52,7 @@ export class GridViewComponent implements OnInit {
         pack[set].push(this.ListOfDesign[el]);
         set === numOfCols - 1 ? (set = 0) : set++;
    }
-    console.log(pack);
+    
     return pack;
   }
 

@@ -11,7 +11,7 @@
     cursor: pointer;
 }
 
-.grid-container .design-card:hover{
+.grid-container .design-card:hover img{
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
 }
@@ -24,7 +24,7 @@
     position: absolute;
     left: 0px;
     bottom: 0px;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.7);
     color:white;
     padding: 10px 5px;
     margin-bottom: 0px;
