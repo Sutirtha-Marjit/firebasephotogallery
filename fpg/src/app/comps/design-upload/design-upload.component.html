@@ -1,0 +1,54 @@
+<div class="design-upload-wrap">
+    <div class="update-window">
+      <form name="fileupload">
+       <div class="container-fluid">                       
+              <div class="row">
+                <div class="col">
+                  <div *ngIf="MAIN_IMAGE_SELECTED" style="height:100%; text-align:center;">                  
+                      <img id="MIM" class="img-thumbnail" src="{{srcM}}"  title=""/>
+                      <hr/>
+                      <div style="text-align:center;">
+                      <div class="form-group">
+                          <label class="text-info"  for="colors"><strong>Quality {{quality_main}}</strong></label>
+                          <input value="70" class="form-control" type="range" name="quality_main" min="1" max="100" [(ngModel)]="quality_main"/>
+                      </div>    
+
+                      <a (click)="cleanUp('main')" class="btn btn-dark">Wrong design! I have to change</a>
+                     </div>
+                  </div>
+                  <div *ngIf="!MAIN_IMAGE_SELECTED" class="file-input-operator" (click)="openFileSelector('main_image_file_input')">
+                    <h3>Please upload image</h3>
+                    <p>main image</p>
+                  </div>
+                <input (change)="onImageSelect('main_image_file_input','main')" id="main_image_file_input" type="file" name="main_image_file_input"/>
+                </div>
+
+                <div class="col">
+                  <div *ngIf="THUMB_IMAGE_SELECTED" style="height:100%; text-align:center;">
+                       <img id="TIM" class="img-thumbnail" src="{{srcT}}"  title=""/>
+                        <hr/>
+                        <div style="text-align:center;">
+                          <div class="form-group">
+                            <label class="text-info"  for="colors"><strong>Quality {{quality_thumbnail}}</strong></label>
+                            <input value="70" class="form-control" type="range" name="quality_thumbnail" min="1" max="100" [(ngModel)]="quality_thumbnail"/>
+                          </div> 
+                          <a (click)="cleanUp('thumb')" class="btn btn-dark">Wrong design! I have to change</a>
+                        </div> 
+                        <br/>
+                        <h4 class="text-info">{{Notice}}</h4>
+                  </div>       
+                 <div *ngIf="!THUMB_IMAGE_SELECTED" class="file-input-operator" (click)="openFileSelector('thumb_image_file_input')">
+                   <h3>Please upload image</h3>
+                   <p>thumbnail image</p>
+                 </div>
+                 
+                 <input (change)="onImageSelect('thumb_image_file_input','thumb')" id="thumb_image_file_input" type="file" name="thumb_image_file_input"/>
+                </div>
+
+              </div>
+            </div>
+        </form>
+        <div *ngIf="MAIN_IMAGE_SELECTED && THUMB_IMAGE_SELECTED" class="next-button" (click)=" goForNext()"><h3>Next</h3></div>
+         </div>
+       </div>  
+   

@@ -1,0 +1,90 @@
+.design-upload-wrap{
+    position:fixed;
+    top:52px;
+    left:0px;
+    width:100%;
+    height:100%;
+    background:rgba(0,26,0,0.8);
+}
+
+
+.design-upload-wrap .update-window{
+
+    position:relative;
+    width:75%;
+    height:75%;
+    background:#fff;
+    border-radius: 10px;
+    margin: 6.5% auto;
+    padding:20px; 
+
+}
+
+.design-upload-wrap .update-window .container-fluid{
+    height: 100%;
+
+} 
+
+.update-window .row{
+    height: 100%;
+}
+
+form{
+    height: 100%;
+}
+
+.update-window input[type="file"]{
+    display:none;
+}
+
+.update-window img{
+    max-height: 80%;
+}
+
+.file-input-operator{
+    width:80%;
+    height:80%;
+    position: absolute;
+    left: 10%;
+    top: 10%;
+    background-color:rgba(0,0,0,0.1);
+    border-radius:8px;  
+    text-align: center;
+    padding: 40px;
+    background-image: url('http://sitehostingfaqs.com/wp-content/uploads/2013/03/website-browser-icon.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 20% auto;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.file-input-operator p{
+    text-transform: uppercase;
+}
+
+.file-input-operator:hover{
+background-color:rgba(0,0,0,0.3);
+background-size: 15% auto;
+color:white;
+}
+
+
+.next-button{
+    width:120px;
+    height:120px;
+    background-color:#fafafa;
+    border-radius:400px;
+    position:absolute;
+    top:calc(0% - 60px);
+    right:calc(-60px);
+    text-align: center;
+    padding-top: 47px;
+    cursor:pointer;
+    color:#28a745;
+}
+
+.next-button.preloading{
+   /* background-image: url('../assets/preloader.gif');*/
+}
+

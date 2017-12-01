@@ -12,3 +12,7 @@ export interface DesignItem{
 }
 
 
+export interface DesignImageUploadPack{
+    uploadedMainImageSource:string,
+    uploadedThumbImageSource:string,
+}

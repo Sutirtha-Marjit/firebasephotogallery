@@ -17,6 +17,16 @@ export class FireBasePropertiesService {
     return fb;
   }
 
+  getDesignRootFolder():string{
+    //return 'http://localhost/gallery/';
+    return window['DESIGN_ROOT_FOLDER'] || 'http://localhost/gallery/';
+    
+  }
+
+  getPHPAuthToken():string{
+    return '878787';
+  }
+
   getRefString(type:number):string{
     if(type){
       return this.REF.personal;

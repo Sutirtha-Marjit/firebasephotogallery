@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DesignItem } from '../../shared/Datatypes';
 import {FormControl} from '@angular/forms'
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class GridViewComponent implements OnInit {
   public ListOfDesign:Array<any>=[];
   private FireBaseDataREF:any = null;
  
-  constructor(private fbps:FireBasePropertiesService) {
+  constructor(private http:HttpClient,private fbps:FireBasePropertiesService) {
     var base = this;
     this.firebase = fbps.getInstanceOfFireBase();
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
@@ -33,7 +34,19 @@ export class GridViewComponent implements OnInit {
   
   public removeDesign(id:string){
       if(confirm('Are you sure you want to delete this design')){
-        this.FireBaseDataREF.child(id).remove();      
+        var formdata = new FormData();
+        var filename = (()=>{
+                      var arr = this.ListOfDesign[id].file.split('/');
+                      return arr[arr.length-1];
+                    })();
+        formdata.append('auth-token',this.fbps.getPHPAuthToken());
+        formdata.append('action','remove');
+        formdata.append('filename',filename);
+
+        this.http.post(this.fbps.getDesignRootFolder()+'feed.php',formdata).subscribe((data)=>{
+          this.FireBaseDataREF.child(id).remove();  
+        })
+        //this.FireBaseDataREF.child(id).remove();      
       }      
   }
 

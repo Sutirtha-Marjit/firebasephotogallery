@@ -1,5 +1,5 @@
 import { Component, OnInit,Input, Output} from '@angular/core';
-import { DesignItem, DesignImageUploadPack } from '../../shared/Datatypes';
+import { DesignItem } from '../../shared/Datatypes';
 import {FormControl} from '@angular/forms'
 import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
 
@@ -62,9 +62,27 @@ export class CreatedesignComponent implements OnInit {
     this.localImageSource = source;
   }
 
+  public uploadImage(){
+    var base = this;
+      setTimeout(function(){
+        base.imageSelected = true;
+        base.physicalImagePath = base.testDefaultImageSource;
+        base.designItem.file = base.testDefaultImageSource;
+      },1000);
+      
+  }
+
+  public cleanLocalImageSelection(){
+    this.fileInput.value = "";
+    this.localImageSource="";
+    this.imageSelectedLocal = false;
+  }
 
   public processImageAndShow(){
-     
+      this.fileInput = <HTMLInputElement>document.querySelector('input[type="file"]#file');
+      if(this.fileInput.files[0]){
+        this.fileReader.readAsDataURL(this.fileInput.files[0]);
+      }
   }
 
   public populateListOfColors(){
@@ -90,16 +108,10 @@ export class CreatedesignComponent implements OnInit {
     })
   }
 
-  onDesignSelectionComplete(pack:DesignImageUploadPack){
-    this.imageSelected = true;
-    this.physicalImagePath = pack.uploadedMainImageSource;
-    this.designItem.file = this.physicalImagePath;
-  }
-
   ngOnInit() {
     this.populateListOfColors();
     this.colorBoxContainer = document.querySelector('.color-box-container');
-    
+    console.log(this.fileInput);
   }
 
 }
