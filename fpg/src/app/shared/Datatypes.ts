@@ -16,3 +16,9 @@ export interface DesignImageUploadPack{
     uploadedMainImageSource:string,
     uploadedThumbImageSource:string,
 }
+
+export interface SizePass{
+    status:boolean,
+    limit:number,
+    size:number
+}

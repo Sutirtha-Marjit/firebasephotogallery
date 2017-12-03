@@ -41,13 +41,16 @@ export class TableViewComponent implements OnInit {
 
       for(var el in this.ListOfDesign){
         this.ListOfDesign[el].id = el;
-        if(this.ListOfDesign[el].date){
-          this.ListOfDesign[el].date = new Date(this.ListOfDesign[el].date);
-        }
-        
+        if(this.ListOfDesign[el].date){          
+          this.ListOfDesign[el].dateString = new Date(this.ListOfDesign[el].date);
+        }        
         pack.push(this.ListOfDesign[el]);
       }
 
+      pack.sort((a,b)=>{
+        return (b.date - a.date);
+      });
+      
       return pack;
    }
 

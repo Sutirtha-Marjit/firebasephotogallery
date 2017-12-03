@@ -1,5 +1,5 @@
 <div class="design-upload-wrap">
-    <div class="update-window">
+    <div class="update-window {{preloadingClass}}">
       <form name="fileupload">
        <div class="container-fluid">                       
               <div class="row">
@@ -8,9 +8,9 @@
                       <img id="MIM" class="img-thumbnail" src="{{srcM}}"  title=""/>
                       <hr/>
                       <div style="text-align:center;">
-                      <div class="form-group">
-                          <label class="text-info"  for="colors"><strong>Quality {{quality_main}}</strong></label>
-                          <input value="70" class="form-control" type="range" name="quality_main" min="1" max="100" [(ngModel)]="quality_main"/>
+                      <div class="wbh-range-group" *ngIf="!ALREADY_UPLOADED_IMAGE_IN_USE_MAIN">
+                          <label><strong>Quality {{quality_main}}%</strong></label>
+                          <input value="70" type="range" name="quality_main" min="1" max="100" [(ngModel)]="quality_main"/>
                       </div>    
 
                       <a (click)="cleanUp('main')" class="btn btn-dark">Wrong design! I have to change</a>
@@ -28,8 +28,8 @@
                        <img id="TIM" class="img-thumbnail" src="{{srcT}}"  title=""/>
                         <hr/>
                         <div style="text-align:center;">
-                          <div class="form-group">
-                            <label class="text-info"  for="colors"><strong>Quality {{quality_thumbnail}}</strong></label>
+                          <div class="wbh-range-group" *ngIf="!ALREADY_UPLOADED_IMAGE_IN_USE_THUMB">
+                            <label><strong>Quality {{quality_thumbnail}}</strong></label>
                             <input value="70" class="form-control" type="range" name="quality_thumbnail" min="1" max="100" [(ngModel)]="quality_thumbnail"/>
                           </div> 
                           <a (click)="cleanUp('thumb')" class="btn btn-dark">Wrong design! I have to change</a>
@@ -46,9 +46,15 @@
                 </div>
 
               </div>
+              
             </div>
+            
         </form>
-        <div *ngIf="MAIN_IMAGE_SELECTED && THUMB_IMAGE_SELECTED" class="next-button" (click)=" goForNext()"><h3>Next</h3></div>
+        <div class="form-cover"></div>
+        <div *ngIf="MAIN_IMAGE_SELECTED && THUMB_IMAGE_SELECTED" class="next-button" (click)=" goForNext()">
+            <h3>Next</h3>
+            <img src="assets/preloader.gif"/>
+        </div>
          </div>
        </div>  
    

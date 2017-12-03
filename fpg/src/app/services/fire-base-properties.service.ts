@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SizePass, DesignItem } from '../shared/Datatypes';
 
 @Injectable()
 export class FireBasePropertiesService {
@@ -11,6 +12,43 @@ export class FireBasePropertiesService {
       corporate:'DESIGN_HUB_TEST_2017D04D02',
     }
    }
+   
+   
+
+   showAlert(msg){
+     alert(msg);
+   }
+
+   getABlankDesignItem():DesignItem{
+      return {
+        heading:'Some heading',
+        description:'Some description',
+        notes:'My created designs',
+        tags:['design','colorful','corporate'],
+        colors:['#FFFFFF','#000000','#666666','#222222','#444444'],
+        grade:5,
+        file:'',
+        date:new Date(),
+        type:''
+      }
+   }
+
+  getSizePass(fileObject:any):SizePass{
+    var crSize = (fileObject['size']/1024)/1024;
+
+    var sizepass:SizePass = {
+      size:crSize,
+      status:false,
+      limit:1
+    };
+
+    if(crSize>1){
+
+      return sizepass;
+    }
+    sizepass.status = true;
+    return sizepass;
+  }
 
   getInstanceOfFireBase():FireBase{
     var fb:FireBase = window['firebase'];

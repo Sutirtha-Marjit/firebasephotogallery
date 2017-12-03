@@ -1,5 +1,5 @@
-import { Component, OnInit , Output, EventEmitter} from '@angular/core';
-import { DesignImageUploadPack } from '../../shared/Datatypes';
+import { Component, OnInit , OnChanges, Output, Input, EventEmitter} from '@angular/core';
+import { DesignImageUploadPack ,SizePass, DesignItem} from '../../shared/Datatypes';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
 
@@ -8,12 +8,16 @@ import {FireBasePropertiesService} from '../../services/fire-base-properties.ser
   templateUrl: './design-upload.component.html',
   styleUrls: ['./design-upload.component.css']
 })
-export class DesignUploadComponent implements OnInit {
+export class DesignUploadComponent implements OnInit,OnChanges {
 
   @Output()onDesignSelectionComplete:EventEmitter<DesignImageUploadPack> = new EventEmitter();
+  @Input()designItemToUpDate:DesignItem = null;
+  @Input()UPDATE_MODE:boolean;
 
   public MAIN_IMAGE_SELECTED = false;
   public THUMB_IMAGE_SELECTED = false;
+  public ALREADY_UPLOADED_IMAGE_IN_USE_MAIN = false;
+  public ALREADY_UPLOADED_IMAGE_IN_USE_THUMB = false;
   public preloadingClass='';
   public frMain:FileReader;
   public frThumb:FileReader;
@@ -23,13 +27,15 @@ export class DesignUploadComponent implements OnInit {
   public quality_thumbnail = 90;
   private uploadPack:DesignImageUploadPack = {uploadedMainImageSource:'',uploadedThumbImageSource:''};
   private Notice:string ='';
+  
 
-
+  
   constructor(private http:HttpClient,private fbps:FireBasePropertiesService) { 
     this.frMain = new FileReader();
     this.frThumb = new FileReader();
 
     this.frMain.onload = (e:any)=>{
+      
       this.srcM = e.target.result;
       this.MAIN_IMAGE_SELECTED = true;
     }
@@ -42,12 +48,11 @@ export class DesignUploadComponent implements OnInit {
 
   }
 
-  goForNext(){
-
-    var formdata = new FormData();
+  private normalSubmission(){
+      var formdata = new FormData();
     var mainImageFileInput:HTMLInputElement =   <HTMLInputElement>document.getElementById('main_image_file_input');
     var thumbImageFileInput:HTMLInputElement =   <HTMLInputElement>document.getElementById('thumb_image_file_input');
-
+    this.preloadingClass = "preloading";
     formdata.append('quality_main',''+this.quality_main);
     formdata.append('quality_thumbnail',''+this.quality_thumbnail);
     formdata.append('designs[]',mainImageFileInput.files[0]);
@@ -56,6 +61,7 @@ export class DesignUploadComponent implements OnInit {
     formdata.append('action','upload');
 
     this.http.post(this.fbps.getDesignRootFolder()+'feed.php',formdata).subscribe((data:any)=>{
+      this.preloadingClass = "";
       this.Notice = data.status.description;
       if(data.status.description.indexOf('uploaded!')>-1){
         this.uploadPack.uploadedMainImageSource = this.fbps.getDesignRootFolder()+data.data.main;
@@ -64,7 +70,45 @@ export class DesignUploadComponent implements OnInit {
       }
 
     })
+  }
 
+  simpleDelete(path:string,action:string,callback:Function){
+      var formdata = new FormData();
+      formdata.append('auth-token',this.fbps.getPHPAuthToken());
+      formdata.append('action',action);
+      formdata.append('filename',path);
+
+      this.http.post(this.fbps.getDesignRootFolder()+'feed.php',formdata).subscribe((statusDataFirst)=>{
+          callback(statusDataFirst);       
+      });
+
+  }
+
+  goForNext(){
+
+      if(this.preloadingClass.length==0){
+          if(this.UPDATE_MODE){
+        var tPath=this.designItemToUpDate.file.replace('main','small');
+        var arr = this.designItemToUpDate.file.split('/');
+        var fileName = arr[arr.length-1];
+
+        if(this.srcM !== this.designItemToUpDate.file){
+            this.simpleDelete(fileName,'REMOVE_MAIN',(data)=>{ console.dir(data);}); 
+        }
+
+        if(this.srcT !== tPath){
+            this.simpleDelete(fileName,'REMOVE_THUMB',(data)=>{ console.dir(data);}); 
+        }
+
+        this.normalSubmission();
+        
+        
+
+      }else{
+        console.log('normalSubmission');
+        this.normalSubmission();
+      }
+      }
     
   }
 
@@ -72,10 +116,13 @@ export class DesignUploadComponent implements OnInit {
     if(type==='main'){
       this.srcM = "";
       this.MAIN_IMAGE_SELECTED = false;
+      this.ALREADY_UPLOADED_IMAGE_IN_USE_MAIN = false;
+      
     }
     if(type==='thumb'){
        this.srcT = "";
        this.THUMB_IMAGE_SELECTED = false;
+       this.ALREADY_UPLOADED_IMAGE_IN_USE_THUMB = false;
     }
   }
 
@@ -95,20 +142,34 @@ export class DesignUploadComponent implements OnInit {
   onImageSelect(inputID:string,type:string){
 
     var fileInput:HTMLInputElement = <HTMLInputElement>document.getElementById(inputID);
-    
+    var sizePass:SizePass;
     if(type==='main'){
 
       if(fileInput.files[0]){
-        this.frMain.readAsDataURL(fileInput.files[0]);
+        sizePass = this.fbps.getSizePass(fileInput.files[0]);
+        if(sizePass.status){
+          this.frMain.readAsDataURL(fileInput.files[0]);
+        }else{
+          let sz = sizePass.size.toFixed(2);
+          var choice = confirm('Please optimize your image file.\n It crossed the limit of '+sizePass.limit+'MB. Size of your file is '+sizePass.size+'MB.\nGo with it?');
+          if(choice){
+            this.frMain.readAsDataURL(fileInput.files[0]);
+          }
+        }
       }
-      
 
     }
 
     if(type==='thumb'){
 
       if(fileInput.files[0]){
+        sizePass = this.fbps.getSizePass(fileInput.files[0]);
+        if(sizePass.status){
         this.frThumb.readAsDataURL(fileInput.files[0]);
+        }else{
+          let sz = sizePass.size.toFixed(2);
+          this.fbps.showAlert('Please optimize your image file. It crossed the limit of '+sizePass.limit+'MB. Size of your file is '+sizePass.size+'MB');
+        }
       }
       
 
@@ -117,8 +178,26 @@ export class DesignUploadComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+ 
 
+  ngOnChanges(){
+    /*console.log('ngOnChanges');
+    console.log('UPLOAD WINDOW');
+    console.dir(this.UPDATE_MODE);
+    console.dir(this.designItemToUpDate);
+    console.log('.................................');*/
+    if(this.UPDATE_MODE){
+      this.srcM = this.designItemToUpDate.file;
+      this.srcT = this.designItemToUpDate.file.replace('main','small');
+      this.MAIN_IMAGE_SELECTED = true;
+      this.THUMB_IMAGE_SELECTED = true; 
+      this.ALREADY_UPLOADED_IMAGE_IN_USE_THUMB = true;   
+      this.ALREADY_UPLOADED_IMAGE_IN_USE_MAIN = true;   
+    }
+  }
+
+  ngOnInit() {
+    
   }
 
 }

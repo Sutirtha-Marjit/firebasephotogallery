@@ -1,11 +1,11 @@
 <div class="container-fluid">
 <h2 class="pdT50">Create Design</h2>
+<span>{{UPDATE_ID}}</span>
 <div class="row">
     
 <div class="col">
     <p>Please remember if you enter wrong info, website will populate wrong information accordingly.  Understand each field carefully and insert correct data.</p>
     <form name="create-design">
-        
         <div class="form-group" *ngIf="physicalImagePath">
             <h5>Uploaded in this following place</h5>
             <a href="{{physicalImagePath}}"><span class="text-primary">{{physicalImagePath}}</span></a>
@@ -31,15 +31,13 @@
         </div>
         <div class="form-group">
             <label class="text-success"  for="colors"><strong>Colors</strong></label>
-            <input [(ngModel)]="tempColorListString" (keyup)="populateListOfColors()" name="colors" type="text" class="form-control" id="colors" placeholder="Put colors in comma separated way, like #EFEED, #23EE66 ...">
+            <input [(ngModel)]="tempColorListString" (change)="populateListOfColors()" name="colors" type="text" class="form-control" id="colors" placeholder="Put colors in comma separated way, like #EFEED, #23EE66 ...">
         </div>
-        <div class="color-box-container">
-              
-        </div>
+        <div class="color-box-container"></div>
         
         <div class="form-group">
             <label class="text-success"  for="colors"><strong>Tags</strong></label>
-            <input type="text" class="form-control" id="tags" placeholder="Put tags in comma separated way, like #corporate, #colorful, #trendy ...">
+            <input [(ngModel)]="tempTagListString" (change)="updateListOfTags()" name="tags" type="text" class="form-control" id="tags" placeholder="Put tags in comma separated way, like #corporate, #colorful, #trendy ...">
         </div>
         <div class="form-group">
             <label class="text-success"  for="grade"><strong>Grade</strong> </label>&nbsp;&nbsp;<span><strong>{{designItem.grade}}</strong></span>
@@ -61,4 +59,4 @@
 </div>
 
 
-<app-design-upload *ngIf="!imageSelected" (onDesignSelectionComplete)="onDesignSelectionComplete($event)"></app-design-upload>
+<app-design-upload [designItemToUpDate]="designItemToUpDate" [UPDATE_MODE]="UPDATE_MODE"  *ngIf="!imageSelected" (onDesignSelectionComplete)="onDesignSelectionComplete($event)"></app-design-upload>

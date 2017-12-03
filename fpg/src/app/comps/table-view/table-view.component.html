@@ -17,9 +17,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr [routerLink]="['/detail-view',designEL.id]"  class="designEL-row" *ngFor="let designEL of getRowPackets(); let i=index;">
+      <tr class="designEL-row" *ngFor="let designEL of getRowPackets(); let i=index;">
         <th scope="row">{{i}}</th>
-        <td><img  src="{{designEL.file}}" alt="{{designEL.heading}}" class="img-thumbnail table-view"></td>
+        <td><a [routerLink]="['/detail-view',designEL.id]"><img  src="{{designEL.file}}" alt="{{designEL.heading}}" class="img-thumbnail table-view"></a></td>
         <td><h6 class="text-success">{{designEL.heading}}</h6></td>
         <td>{{designEL.description}}</td>
         <td>{{designEL.type}}</td>
@@ -27,7 +27,8 @@
         <td>{{designEL.tags}}</td>
         <td>{{designEL.colors}}</td>
         <td>{{designEL.grade}}</td>
-        <td>{{designEL.date}}</td>
+        <td class="{{designEL.date}}">{{designEL.dateString}}</td>
+        <td><a class="btn btn-sm btn-danger">Delete</a></td>
       </tr>
       
     </tbody>

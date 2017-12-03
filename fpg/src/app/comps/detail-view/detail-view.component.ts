@@ -10,14 +10,16 @@ import {FireBasePropertiesService} from '../../services/fire-base-properties.ser
 })
 export class DetailViewComponent implements OnInit {
 
-  private idToRequest:string;
+  private idToRequest:string='';
   public firebase:FireBase;
   private FireBaseDataREF:any = null;
   private ObjectOfDesign = {};
-  private currentDesignItem:any;
-
+  public currentDesignItem:DesignItem=null;
+  public teststr='OK';
+  
   constructor(private route: ActivatedRoute,private fbps:FireBasePropertiesService) { 
     var base = this;
+    base.currentDesignItem = this.fbps.getABlankDesignItem();
     base.firebase = fbps.getInstanceOfFireBase();
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
     
@@ -29,7 +31,11 @@ export class DetailViewComponent implements OnInit {
       this.idToRequest = params['id'];
       this.FireBaseDataREF.once('value').then((snapShot)=>{
       this.ObjectOfDesign = snapShot.val();
-      console.log(this.ObjectOfDesign[this.idToRequest]);       
+      //console.log(this.ObjectOfDesign[this.idToRequest]); 
+      this.currentDesignItem = this.ObjectOfDesign[this.idToRequest];
+      console.log('DESIGN ITEM:');
+      console.log(this.currentDesignItem);
+      this.teststr = 'GREAT';
     });
       
       
