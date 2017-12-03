@@ -1,5 +1,5 @@
 import { Component, OnInit , OnChanges, Output, Input, EventEmitter} from '@angular/core';
-import { DesignImageUploadPack ,SizePass, DesignItem} from '../../shared/Datatypes';
+import { DesignImageUploadPack ,SizePass, DesignItem, DesignUpdatePatterns} from '../../shared/Datatypes';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
 
@@ -84,30 +84,62 @@ export class DesignUploadComponent implements OnInit,OnChanges {
 
   }
 
+  updateDesigns(){
+    var formdata = new FormData(),tPath=this.designItemToUpDate.file.replace('main','small'),pattern='';
+    var mainImageFileInput:HTMLInputElement =   <HTMLInputElement>document.getElementById('main_image_file_input');
+    var thumbImageFileInput:HTMLInputElement =   <HTMLInputElement>document.getElementById('thumb_image_file_input');
+
+    if(this.srcM === this.designItemToUpDate.file && this.srcT === tPath){
+      if(confirm('So you are not going to change any of the design images... right?')){
+        this.uploadPack.uploadedMainImageSource = this.srcM;
+        this.uploadPack.uploadedThumbImageSource = this.srcT;
+        this.onDesignSelectionComplete.emit(this.uploadPack);
+      }
+    }else{
+      if(this.srcM !== this.designItemToUpDate.file && this.srcT !== tPath){
+          pattern = this.fbps.getUpdatePatterns().MAIN_AND_THUMB; 
+          formdata.append('maindesign',mainImageFileInput.files[0]); 
+          formdata.append('thumbdesign',thumbImageFileInput.files[0]); 
+                   
+      }
+      if(this.srcM === this.designItemToUpDate.file && this.srcT !== tPath){
+        pattern = this.fbps.getUpdatePatterns().THUMBNAIL_ONLY;
+        formdata.append('thumbdesign',thumbImageFileInput.files[0]);
+      }
+      if(this.srcM !== this.designItemToUpDate.file && this.srcT === tPath){
+        pattern = this.fbps.getUpdatePatterns().MAIN_ONLY;  
+        formdata.append('maindesign',mainImageFileInput.files[0]);       
+      }
+    }
+    
+    formdata.append('auth-token',this.fbps.getPHPAuthToken());
+    formdata.append('action','UPDATE_DESIGNS');
+    formdata.append('quality_main',''+this.quality_main);
+    formdata.append('quality_thumbnail',''+this.quality_thumbnail);
+    formdata.append('pattern',pattern); 
+    formdata.append('old',this.designItemToUpDate.file);
+    
+    this.preloadingClass = "preloading";
+    this.http.post(this.fbps.getDesignRootFolder()+'feed.php',formdata).subscribe((statusDataFirst)=>{
+          console.dir(statusDataFirst);  
+          this.preloadingClass = "";     
+          this.uploadPack.uploadedMainImageSource = this.designItemToUpDate.file;
+          this.uploadPack.uploadedThumbImageSource = tPath;
+          this.onDesignSelectionComplete.emit(this.uploadPack);
+    });
+
+  }
+
   goForNext(){
 
       if(this.preloadingClass.length==0){
           if(this.UPDATE_MODE){
-        var tPath=this.designItemToUpDate.file.replace('main','small');
-        var arr = this.designItemToUpDate.file.split('/');
-        var fileName = arr[arr.length-1];
-
-        if(this.srcM !== this.designItemToUpDate.file){
-            this.simpleDelete(fileName,'REMOVE_MAIN',(data)=>{ console.dir(data);}); 
-        }
-
-        if(this.srcT !== tPath){
-            this.simpleDelete(fileName,'REMOVE_THUMB',(data)=>{ console.dir(data);}); 
-        }
-
-        this.normalSubmission();
-        
-        
-
-      }else{
-        console.log('normalSubmission');
-        this.normalSubmission();
-      }
+                this.updateDesigns();
+               
+              }else{
+                console.log('normalSubmission');
+                this.normalSubmission();
+              }
       }
     
   }

@@ -11,12 +11,14 @@ import { GridViewComponent } from './comps/grid-view/grid-view.component';
 import { DetailViewComponent } from './comps/detail-view/detail-view.component';
 import {FireBasePropertiesService} from './services/fire-base-properties.service';
 import { DesignUploadComponent } from './comps/design-upload/design-upload.component';
+import { GarbageCleanUpComponent } from './comps/garbage-clean-up/garbage-clean-up.component';
 
 const appRoutes: Routes =[
   {path:'create-new-design',component:CreatedesignComponent},
   {path:'grid-view',component:GridViewComponent},
   {path:'table-view',component:TableViewComponent},
   {path:'detail-view/:id',component:DetailViewComponent},
+  {path:'garbage-cleanup',component:GarbageCleanUpComponent}
 ];
 
 
@@ -28,7 +30,8 @@ const appRoutes: Routes =[
     TableViewComponent,
     GridViewComponent,
     DetailViewComponent,
-    DesignUploadComponent
+    DesignUploadComponent,
+    GarbageCleanUpComponent
   ],
   imports: [
     BrowserModule,

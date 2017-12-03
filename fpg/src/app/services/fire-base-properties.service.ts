@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SizePass, DesignItem } from '../shared/Datatypes';
+import { SizePass, DesignItem, DesignUpdatePatterns } from '../shared/Datatypes';
 
 @Injectable()
 export class FireBasePropertiesService {
@@ -19,18 +19,43 @@ export class FireBasePropertiesService {
      alert(msg);
    }
 
+   getUpdatePatterns():DesignUpdatePatterns{
+     return {
+       MAIN_ONLY:'M',
+       THUMBNAIL_ONLY:'T',
+       MAIN_AND_THUMB:'MT'
+     }
+   }
+
    getABlankDesignItem():DesignItem{
       return {
         heading:'Some heading',
         description:'Some description',
-        notes:'My created designs',
-        tags:['design','colorful','corporate'],
-        colors:['#FFFFFF','#000000','#666666','#222222','#444444'],
-        grade:5,
+        notes:'Notes for my design',
+        tags:[],
+        colors:[],
+        grade:10,
         file:'',
         date:new Date(),
         type:''
       }
+   }
+
+   getFnameFromAbsPath(absPath:string):string{
+
+     var arr = absPath.split('/');
+     return arr[arr.length-1];
+
+   }
+
+   getAbsPathFromFname(fname:string,type:string):string{
+
+     if(type==='s'){
+       return this.getDesignRootFolder()+'designs/small/'+fname;
+     }else{
+       return this.getDesignRootFolder()+'designs/main/'+fname;
+     }
+
    }
 
   getSizePass(fileObject:any):SizePass{
@@ -57,8 +82,11 @@ export class FireBasePropertiesService {
 
   getDesignRootFolder():string{
     //return 'http://localhost/gallery/';
-    return window['DESIGN_ROOT_FOLDER'] || 'http://localhost/gallery/';
-    
+    return window['DESIGN_ROOT_FOLDER'] || 'http://localhost/gallery/';    
+  }
+
+  getCacheClearingRandomNumber():string{    
+    return  (new Date()).getTime()+'tx'+((Math.random()+'').replace('0.','_'));
   }
 
   getPHPAuthToken():string{

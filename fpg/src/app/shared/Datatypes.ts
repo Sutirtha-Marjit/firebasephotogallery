@@ -22,3 +22,22 @@ export interface SizePass{
     limit:number,
     size:number
 }
+
+export interface DesignUpdatePatterns{
+    
+       MAIN_ONLY: string,
+       THUMBNAIL_ONLY: string,
+       MAIN_AND_THUMB:string
+     
+}
+
+
+
+export interface ValidMappedDesignInage{
+    main:string,
+    thumbnail:string,
+    mapped:boolean,
+    mappedWith:string,
+    onlyImagePath:string
+}
+

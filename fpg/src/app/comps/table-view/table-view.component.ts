@@ -27,10 +27,9 @@ export class TableViewComponent implements OnInit {
       base.ListOfDesign = snapShot.val();
              
     });
-
-    
-
    }
+
+   
 
    openDetailPage(id){
     this.router.navigate(['/detail-view/'+id]); 

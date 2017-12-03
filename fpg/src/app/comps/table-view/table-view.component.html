@@ -19,7 +19,7 @@
     <tbody>
       <tr class="designEL-row" *ngFor="let designEL of getRowPackets(); let i=index;">
         <th scope="row">{{i}}</th>
-        <td><a [routerLink]="['/detail-view',designEL.id]"><img  src="{{designEL.file}}" alt="{{designEL.heading}}" class="img-thumbnail table-view"></a></td>
+        <td><a [routerLink]="['/detail-view',designEL.id]"><img  src="{{designEL.file}}?update={{fbps.getCacheClearingRandomNumber()}}" alt="{{designEL.heading}}" class="img-thumbnail table-view"></a></td>
         <td><h6 class="text-success">{{designEL.heading}}</h6></td>
         <td>{{designEL.description}}</td>
         <td>{{designEL.type}}</td>

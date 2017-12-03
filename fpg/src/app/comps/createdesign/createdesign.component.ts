@@ -22,6 +22,7 @@ export class CreatedesignComponent implements OnInit, OnChanges {
   public colorBoxContainer:Element = null;
   public localImageSource:string = '';
   public physicalImagePath = null;
+  public modfPhysicalImagePath=""
   private FireBaseDataREF:any = null;
   
   
@@ -49,17 +50,7 @@ export class CreatedesignComponent implements OnInit, OnChanges {
     this.DesignType = ["Poster","Website","App","Brochure","Postcard,Flyer","Logo", "Infographic", "Banner", "Business card", "Card or Invitation", "Stationery", "Facebook Cover" ];
     
 
-    this.designItem = {
-      heading:'Some heading',
-      description:'Some description',
-      notes:'',
-      colors:['#990022','#005500'],
-      type:'Poster',
-      tags:[],
-      date:new Date().getTime(),
-      grade:1,
-      file:''
-    };
+    this.designItem = this.fbps.getABlankDesignItem();
 
     this.tempColorListString = this.designItem.colors.toString();
     this.fileReader.onload = function(e:any){      
@@ -100,28 +91,11 @@ export class CreatedesignComponent implements OnInit, OnChanges {
      });
 
      this.tempColorListString = this.designItem.colors.join(',');
-
-     /*
-     if(this.colorBoxContainer!==null){
-       console.log('INSIDE COLORBOX CONTAINER');
-        this.colorBoxContainer.innerHTML = "";
-        for(var i=0;i<this.designItem.colors.length;i++){
-            var colorBox = document.createElement('span');
-            colorBox.className = "color-box";
-            colorBox.style.backgroundColor = this.designItem.colors[i];
-            this.colorBoxContainer.appendChild(colorBox);
-        }
-      }*/
   }
 
   updateLocalImageSource(source:any){
     this.imageSelectedLocal = true;
     this.localImageSource = source;
-  }
-
-
-  public processImageAndShow(){
-     
   }
 
   public postToFireBase(){
@@ -131,9 +105,11 @@ export class CreatedesignComponent implements OnInit, OnChanges {
       var updates = {};
       updates[this.UPDATE_ID] = this.designItem; 
       this.FireBaseDataREF.update(updates);
+      window.location.href = '#/table-view';
     }else{
       console.log('ready for NEW POST');
-      console.log(this.designItem); 
+      console.log(this.designItem);
+      
         this.FireBaseDataREF.push(this.designItem).then(()=>{
         window.location.href = '#/table-view';
       })
@@ -145,7 +121,8 @@ export class CreatedesignComponent implements OnInit, OnChanges {
 
   onDesignSelectionComplete(pack:DesignImageUploadPack){
     this.imageSelected = true;
-    this.physicalImagePath = pack.uploadedMainImageSource;
+    this.physicalImagePath = pack.uploadedMainImageSource
+    this.modfPhysicalImagePath = this.physicalImagePath+'?update='+this.fbps.getCacheClearingRandomNumber();
     this.designItem.file = this.physicalImagePath;
   }
 
@@ -154,6 +131,10 @@ export class CreatedesignComponent implements OnInit, OnChanges {
       console.log(this.UPDATE_MODE);
       console.log(this.designItemToUpDate);
       this.designItem = this.designItemToUpDate;
+      if(this.designItemToUpDate.tags !== undefined){
+        this.tempTagListString = this.designItemToUpDate.tags.join(',');
+      }
+      
   }
 
   ngOnInit() {    

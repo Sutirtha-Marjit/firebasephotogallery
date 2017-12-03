@@ -1,117 +1,156 @@
-import { Component, OnInit,Input, Output} from '@angular/core';
-import { DesignItem } from '../../shared/Datatypes';
+import { Component, OnInit } from '@angular/core';
+import { DesignItem , ValidMappedDesignInage} from '../../shared/Datatypes';
+import { Location } from '@angular/common';
 import {FormControl} from '@angular/forms'
+import { Router  } from '@angular/router';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
 
 @Component({
-  selector: 'app-createdesign',
-  templateUrl: './createdesign.component.html',
-  styleUrls: ['./createdesign.component.css']
+  selector: 'app-garbage-clean-up',
+  templateUrl: './garbage-clean-up.component.html',
+  styleUrls: ['./garbage-clean-up.component.css']
 })
-export class CreatedesignComponent implements OnInit {
-
-  public designItem:DesignItem;
-  public DesignType;
+export class GarbageCleanUpComponent implements OnInit {
   public firebase:FireBase;
-  public tempColorListString:string;
-  public imageSelected:boolean = false;
-  public imageSelectedLocal:boolean = false;
-  public fileInput:HTMLInputElement=null;
-  public colorBoxContainer:Element = null;
-  public localImageSource:string = '';
-  public physicalImagePath = null;
-  private FireBaseDataREF:any = null;
- 
-  private fileReader:FileReader;
-  private testDefaultImageSource = "https://cdn.slidesharecdn.com/ss_thumbnails/ebr-issue4-2015-developing-an-operator-iot-ecosystem-170216165602-thumbnail-4.jpg?cb=1487264267";
+  private ListOfDesignImages:Array<string>=[];
+  private ListOfDesign:Array<any>=[];
+  private FireBaseDataREF:any = [];
 
-  constructor(private fbps:FireBasePropertiesService) { 
-    var base = this;
-    this.firebase = fbps.getInstanceOfFireBase();
+  public resultList:Array<ValidMappedDesignInage>=[];
+  
+
+  constructor(private fbps:FireBasePropertiesService,private http:HttpClient) { 
+    console.clear();
+    var base = this;    
+    base.firebase = fbps.getInstanceOfFireBase();
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
-    /*base.FireBaseDataREF.on('value').then(function(snapshot){
-      console.log(snapshot.val());
-    });*/
+    base.FireBaseDataREF.once('value').then(function(snapShot){
+      base.ListOfDesign = snapShot.val();
+      console.log(base.ListOfDesign);
+      base.prepareList();
+    });
+  }
+
+  getNormalArrayOfListOfDesign(){
+    var arr=[];
+    for(var el in this.ListOfDesign){
+      this.ListOfDesign[el].id=el;
+      arr.push(this.ListOfDesign[el]);
+    }
+
+    return arr;
+  }
+
+  prepareList(){
     
-
-    this.fileReader = new FileReader();
-    this.DesignType = ["Poster","Webapp","App","Brochure","Flyer","Business Identity"];
-    
-
-    this.designItem = {
-      heading:'Some heading',
-      description:'Some description',
-      notes:'',
-      colors:['#990022','#005500'],
-      type:'Poster',
-      tags:[],
-      date:new Date().getTime(),
-      grade:1,
-      file:''
-    };
-
-    this.tempColorListString = this.designItem.colors.toString();
-    this.fileReader.onload = function(e:any){      
-      base.updateLocalImageSource(e.target.result);
-    };
-    
-  }
-
-  updateLocalImageSource(source:any){
-    this.imageSelectedLocal = true;
-    this.localImageSource = source;
-  }
-
-  public uploadImage(){
-    var base = this;
-      setTimeout(function(){
-        base.imageSelected = true;
-        base.physicalImagePath = base.testDefaultImageSource;
-        base.designItem.file = base.testDefaultImageSource;
-      },1000);
+    var localList = [];
+    if(this.ListOfDesign!==null){
       
+      localList = this.getNormalArrayOfListOfDesign();
+      console.log('localList prepared');
+      console.dir(localList);
+      this.ListOfDesignImages.forEach((imgPath)=>{
+
+        if(imgPath!=='.' && imgPath!=='..'){
+          //console.log('find operation for imgPath:'+imgPath);
+          var r = localList.find(function(el){
+             var fnameArr = el.file.split('/');
+             var fname =  fnameArr[fnameArr.length-1];
+             //console.log('examining :'+fname);
+             //console.log('returning '+(fname === imgPath));           
+             return (fname === imgPath);
+          });
+          //console.log('find result');
+          //console.log(r);
+          if(r){
+            console.log(imgPath+' is found for :'+r.id);
+            this.resultList.push(
+              {
+                mapped:true,
+                mappedWith:r.id,
+                main:this.fbps.getDesignRootFolder()+'/designs/main/'+imgPath,
+                thumbnail:this.fbps.getDesignRootFolder()+'/designs/small/'+imgPath,
+                onlyImagePath:imgPath
+              }
+            );
+          }else{
+            console.log(imgPath+' is not found');
+            this.resultList.push(
+              {
+                mapped:false,
+                mappedWith:'no data availabale',
+                main:this.fbps.getDesignRootFolder()+'/designs/main/'+imgPath,
+                thumbnail:this.fbps.getDesignRootFolder()+'/designs/small/'+imgPath,
+                onlyImagePath:imgPath
+              }
+            );
+          }
+
+        }  
+
+
+      });
+
+
+    }else{
+
+      this.ListOfDesignImages.forEach((imgPath)=>{
+          if(imgPath!=='.' && imgPath!=='..'){
+              this.resultList.push({
+              mapped:false,
+              mappedWith:'',
+              main:this.fbps.getDesignRootFolder()+'/designs/main/'+imgPath,
+              thumbnail:this.fbps.getDesignRootFolder()+'/designs/small/'+imgPath,
+              onlyImagePath:imgPath
+            })
+          }
+      });
+
+    }
+
+  this.sortByCategory();
+   // console.log(this.resultList);
+
   }
 
-  public cleanLocalImageSelection(){
-    this.fileInput.value = "";
-    this.localImageSource="";
-    this.imageSelectedLocal = false;
-  }
-
-  public processImageAndShow(){
-      this.fileInput = <HTMLInputElement>document.querySelector('input[type="file"]#file');
-      if(this.fileInput.files[0]){
-        this.fileReader.readAsDataURL(this.fileInput.files[0]);
-      }
-  }
-
-  public populateListOfColors(){
-      
-      
-      this.designItem.colors = this.tempColorListString.split(',');
-      if(this.colorBoxContainer!==null){
-        this.colorBoxContainer.innerHTML = "";
-        for(var i=0;i<this.designItem.colors.length;i++){
-            var colorBox = document.createElement('span');
-            colorBox.className = "color-box";
-            colorBox.style.backgroundColor = this.designItem.colors[i];
-            this.colorBoxContainer.appendChild(colorBox);
-        }
-      }
-  }
-
-  public postToFireBase(){
-    console.log(this.designItem);  
-      
-    this.FireBaseDataREF.push(this.designItem).then(function(){
-      alert('Your Data Saved');
+  sortByCategory(){
+    this.resultList.sort((designEL)=>{
+      var t = designEL.mapped ? 1 : 0;
+      return t;
     })
   }
 
+  simpleDelete(path:string,action:string){
+      var formdata = new FormData();
+      
+      formdata.append('auth-token',this.fbps.getPHPAuthToken());
+      formdata.append('action',action);
+      formdata.append('filename',path);
+
+      this.http.post(this.fbps.getDesignRootFolder()+'feed.php',formdata).subscribe((statusDataFirst)=>{
+               console.log(statusDataFirst);
+               
+      });
+
+  }
+
+  getList(){
+    this.resultList = [];
+    this.ListOfDesignImages = [];
+    var formdata = new FormData();
+    formdata.append('auth-token',this.fbps.getPHPAuthToken());
+    formdata.append('action','list');
+    this.http.post(this.fbps.getDesignRootFolder()+'feed.php',formdata).subscribe((statusObject:any)=>{
+      this.ListOfDesignImages = statusObject.data;
+      this.prepareList();
+    });
+  }
+
   ngOnInit() {
-    this.populateListOfColors();
-    this.colorBoxContainer = document.querySelector('.color-box-container');
-    console.log(this.fileInput);
+     this.getList();
+
+
   }
 
 }

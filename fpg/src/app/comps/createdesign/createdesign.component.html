@@ -13,7 +13,7 @@
         <div *ngIf="imageSelected">
         <div class="form-group">
             <label class="text-success"  for="type"><strong>Type</strong></label>
-            <select class="form-control">
+            <select class="form-control" name="design_type" [(ngModel)]="designItem.type">
                 <option *ngFor="let opt of DesignType" value="{{opt}}">{{opt}}</option>
             </select>
         </div>
@@ -36,8 +36,8 @@
         <div class="color-box-container"></div>
         
         <div class="form-group">
-            <label class="text-success"  for="colors"><strong>Tags</strong></label>
-            <input [(ngModel)]="tempTagListString" (change)="updateListOfTags()" name="tags" type="text" class="form-control" id="tags" placeholder="Put tags in comma separated way, like #corporate, #colorful, #trendy ...">
+            <label class="text-success"  for="tags"><strong>Tags</strong></label>
+            <input [(ngModel)]="tempTagListString" (focusout)="updateListOfTags()" name="tags" type="text" class="form-control" id="tags" placeholder="Put tags in comma separated way, like #corporate, #colorful, #trendy ...">
         </div>
         <div class="form-group">
             <label class="text-success"  for="grade"><strong>Grade</strong> </label>&nbsp;&nbsp;<span><strong>{{designItem.grade}}</strong></span>
@@ -52,7 +52,7 @@
 <div class="col selected-image" >
     <div>
         <h2>{{designItem.heading}}</h2>    
-        <img src="{{physicalImagePath}}" alt="Selected image" />    
+        <img *ngIf="modfPhysicalImagePath!==null" src="{{modfPhysicalImagePath}}" alt="Selected image" />    
     </div>
 </div>
 </div>
