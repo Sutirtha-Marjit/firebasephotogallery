@@ -1,0 +1,40 @@
+<div class="container-fluid">
+<h2 class="pdT50">Clean unnecessary design images</h2>
+<p></p>
+<div>
+  
+  <table class="table">
+    <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">map/unmap</th>
+          <th scope="col">Image</th>
+          <th scope="col">thumbnail</th>
+          <th scope="col">path</th>
+          <th scope="col">status</th>
+          
+          <th scope="col">action</th>
+         </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of resultList; let i = index;" class="mapped-{{item.mapped}}">
+            <td scope="col">{{i}}</td>
+            <td *ngIf="item.mapped" scope="col"><img class="tab-icon" src='assets/db.jpg'/></td>
+            <td *ngIf="!item.mapped" scope="col"><img class="tab-icon" src='assets/garbage.jpg'/></td>
+            <td scope="col"><img style="width:100px; height:auto;" src="{{item.main}}"/></td>
+            <td scope="col"><img style="width:50px; height:auto;" src="{{item.thumbnail}}"/></td>
+            <td scope="col">
+            <a target="_blank" href="{{item.main}}">{{item.main}}</a>
+            <br/>
+            <a target="_blank" href="{{item.thumbnail}}">{{item.thumbnail}}</a>
+            </td>
+            <td scope="col">{{item.mappedWith}}</td>
+            
+            <td scope="col"><a *ngIf="!item.mapped" class="btn btn-danger btn-sm" (click)='simpleDelete(item.onlyImagePath,"remove")'>Delete</a></td>
+         </tr>
+    </tbody>
+  </table>
+
+  
+</div>
+</div>
