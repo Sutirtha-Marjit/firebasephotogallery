@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Output} from '@angular/core';
+import { Component, OnInit, OnChanges, ElementRef, Renderer2, AfterViewInit, Input, Output, ViewChild} from '@angular/core';
 import { DesignItem, DesignImageUploadPack } from '../../shared/Datatypes';
 import { ActivatedRoute } from '@angular/router';
 import {FormControl} from '@angular/forms'
@@ -9,7 +9,7 @@ import {FireBasePropertiesService} from '../../services/fire-base-properties.ser
   templateUrl: './createdesign.component.html',
   styleUrls: ['./createdesign.component.css']
 })
-export class CreatedesignComponent implements OnInit, OnChanges {
+export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit {
 
   public designItem:DesignItem;
   public DesignType;
@@ -35,8 +35,10 @@ export class CreatedesignComponent implements OnInit, OnChanges {
   @Input()designItemToUpDate:DesignItem;
   @Input()UPDATE_MODE:boolean;
   @Input()UPDATE_ID:string;
+  @ViewChild('colorBoxContainer') el:ElementRef;
 
-  constructor(private fbps:FireBasePropertiesService, private route: ActivatedRoute) { 
+
+  constructor(private fbps:FireBasePropertiesService, private route: ActivatedRoute,private rd:Renderer2) { 
     var base = this;
     this.firebase = fbps.getInstanceOfFireBase();
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
@@ -44,7 +46,7 @@ export class CreatedesignComponent implements OnInit, OnChanges {
       console.log(snapshot.val());
     });*/
     
-    console.log(this.route);
+    
 
     this.fileReader = new FileReader();
     this.DesignType = ["Poster","Website","App","Brochure","Postcard,Flyer","Logo", "Infographic", "Banner", "Business card", "Card or Invitation", "Stationery", "Facebook Cover" ];
@@ -91,6 +93,26 @@ export class CreatedesignComponent implements OnInit, OnChanges {
      });
 
      this.tempColorListString = this.designItem.colors.join(',');
+     this.fillColorBoxes();
+     
+  }
+
+  fillColorBoxes(){
+
+      
+      console.log("fillColorBoxes");
+      console.log(this.colorBoxContainer);
+      if(this.colorBoxContainer!=null){
+          this.colorBoxContainer.innerHTML="";
+          this.designItem.colors.forEach((crBGcolor)=>{
+          var colorbox = document.createElement('span');
+          colorbox.className = "color-box";
+          colorbox.style.backgroundColor = crBGcolor;
+          this.colorBoxContainer.appendChild(colorbox);
+        });
+      }
+      
+      
   }
 
   updateLocalImageSource(source:any){
@@ -134,7 +156,19 @@ export class CreatedesignComponent implements OnInit, OnChanges {
       if(this.designItemToUpDate.tags !== undefined){
         this.tempTagListString = this.designItemToUpDate.tags.join(',');
       }
+      if(this.designItemToUpDate.colors.length>0){
+        this.tempColorListString = this.designItemToUpDate.colors.join(',');
+      }
       
+  }
+
+  ngAfterViewInit(){
+    //console.log('ngAfterViewInit');
+    //console.log(this.rd);
+    if(this.el){
+      this.colorBoxContainer = this.el.nativeElement;
+    }
+    
   }
 
   ngOnInit() {    

@@ -41,6 +41,7 @@ export class DesignUploadComponent implements OnInit,OnChanges {
     }
 
     this.frThumb.onload = (e:any)=>{
+      
       this.srcT = e.target.result;
       this.THUMB_IMAGE_SELECTED = true;
     }
@@ -172,7 +173,7 @@ export class DesignUploadComponent implements OnInit,OnChanges {
   }
 
   onImageSelect(inputID:string,type:string){
-
+    
     var fileInput:HTMLInputElement = <HTMLInputElement>document.getElementById(inputID);
     var sizePass:SizePass;
     if(type==='main'){
