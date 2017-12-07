@@ -2,3 +2,14 @@
     width: 100%;
     height: auto;
 }
+
+
+.color-box{
+width:18px;
+height:18px;
+background: #fafafa;
+border-radius: 700px;
+display: inline-block;
+margin-right: 6px;
+border:solid 2px rgba(0,0,0,0.2);
+}

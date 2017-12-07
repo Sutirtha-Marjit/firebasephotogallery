@@ -33,7 +33,9 @@
             <label class="text-success"  for="colors"><strong>Colors</strong></label>
             <input [(ngModel)]="tempColorListString" (change)="populateListOfColors()" name="colors" type="text" class="form-control" id="colors" placeholder="Put colors in comma separated way, like #EFEED, #23EE66 ...">
         </div>
-        <div id="colorBoxContainer" class="color-box-container" #colorBoxContainer></div>
+        <div id="colorBoxContainer" class="color-box-container" #colorBoxContainer>
+            <span *ngFor="let clr of designItem.colors" class="color-box" [ngStyle]="{backgroundColor:clr}"></span>
+        </div>
         
         <div class="form-group">
             <label class="text-success"  for="tags"><strong>Tags</strong></label>

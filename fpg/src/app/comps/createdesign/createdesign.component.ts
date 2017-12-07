@@ -156,7 +156,7 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit 
       if(this.designItemToUpDate.tags !== undefined){
         this.tempTagListString = this.designItemToUpDate.tags.join(',');
       }
-      if(this.designItemToUpDate.colors.length>0){
+      if(this.designItemToUpDate.colors !== undefined){
         this.tempColorListString = this.designItemToUpDate.colors.join(',');
       }
       
