@@ -13,19 +13,22 @@
           <th scope="col">Tags</th>
           <th scope="col">Colors</th>
           <th scope="col">Grade</th>
-          <th scope="col">Date</th>
+          <th scope="col"><a href="#">Date</a></th>
+          <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody>
       <tr class="designEL-row" *ngFor="let designEL of getRowPackets(); let i=index;">
         <th scope="row">{{i}}</th>
-        <td><a [routerLink]="['/detail-view',designEL.id]"><img  src="{{designEL.file}}?update={{cacheClearingRandomNumber}}" alt="{{designEL.heading}}" class="img-thumbnail table-view"></a></td>
+        <td><a [routerLink]="['/detail-view',designEL.id]"><img  src="{{designEL.thumb}}" alt="{{designEL.heading}}" class="img-thumbnail table-view"></a></td>
         <td><h6 class="text-success">{{designEL.heading}}</h6></td>
         <td>{{designEL.description}}</td>
         <td>{{designEL.type}}</td>
         <td>{{designEL.notes}}</td>
         <td>{{designEL.tags}}</td>
-        <td>{{designEL.colors}}</td>
+        <td>
+          <span *ngFor="let clr of designEL.colors" title="{{clr}}" class="color-box" [ngStyle]="{backgroundColor:clr}"></span>
+        </td>
         <td>{{designEL.grade}}</td>
         <td class="{{designEL.date}}">{{designEL.dateString}}</td>
         <td><a class="btn btn-sm btn-danger" (click)="removeDesign(designEL.id)">Delete</a></td>
@@ -35,7 +38,12 @@
   </table>
   <div style="text-align:center;" *ngIf="getRowPackets().length===0">
     <br/><br/>
-    <h3>No designs found!</h3>
-    <img style="width:150px;" src="assets/empty-box.png"/>
+    <div *ngIf="FireBaseDataLoaded">
+      <h3>No designs found!</h3>
+      <img style="width:150px;" src="assets/empty-box.png"/>
+    </div>
+    <div *ngIf="!FireBaseDataLoaded">
+        <img style="width:150px;" src="assets/preloader.gif"/>
+    </div>
   </div>
 </div>

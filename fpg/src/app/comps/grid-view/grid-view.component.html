@@ -16,7 +16,7 @@
 
 <div class="container-fluid grid-container">
   <div class="row">
-    <div *ngFor="let designCol of getRowPackets(3)" class="col design-col">
+    <div *ngFor="let designCol of getRowPackets(6)" class="col design-col">
         <div class="design-card" *ngFor="let designEl of designCol" id="{{designEl.id}}">
           <img src="{{designEl.file}}"/>
           <div class="detail-shortcut">
@@ -27,7 +27,7 @@
             <h6>{{designEl.heading}}</h6>
             <p>{{designEl.description}}</p>
             <div class="btn-group">
-              <a class="btn btn-success btn-sm">Open</a>
+              <a (click)="openDetailPage(designEl.id)" class="btn btn-success btn-sm">Open</a>
               <a (click)="removeDesign(designEl.id)" class="btn btn-danger btn-sm">Delete</a>
             </div>
           </div>          

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { DesignItem } from '../../shared/Datatypes';
 import { Location } from '@angular/common';
-import {FormControl} from '@angular/forms'
+import {FormControl} from '@angular/forms';
 import { Router  } from '@angular/router';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
@@ -16,6 +16,7 @@ export class TableViewComponent implements OnInit,OnChanges {
   public firebase:FireBase;
   public ListOfDesign:Array<any>=[];
   private FireBaseDataREF:any = null;
+  public FireBaseDataLoaded:boolean = false;
   private router;
   public cacheClearingRandomNumber='T';
  
@@ -27,6 +28,7 @@ export class TableViewComponent implements OnInit,OnChanges {
     base.cacheClearingRandomNumber = this.fbps.getCacheClearingRandomNumber();
     base.FireBaseDataREF.once('value').then(function(snapShot){
       base.ListOfDesign = snapShot.val();
+      base.FireBaseDataLoaded = true;
              
     });
    }
@@ -62,16 +64,21 @@ export class TableViewComponent implements OnInit,OnChanges {
    }
 
    public getRowPackets():Array<any>{
-      var pack=[];
+      let pack=[];
 
-      for(var el in this.ListOfDesign){
+      for(let el in this.ListOfDesign){
         this.ListOfDesign[el].id = el;
-        if(this.ListOfDesign[el].date){          
-          this.ListOfDesign[el].dateString = new Date(this.ListOfDesign[el].date);
+        this.ListOfDesign[el].thumb = this.ListOfDesign[el].file.replace('main','small');
+        if(this.ListOfDesign[el].date){  
+          let str="";
+          let lcldate = new Date(parseInt(this.ListOfDesign[el].date));
+          str += lcldate.getDate()+'.'+lcldate.getMonth()+'.'+lcldate.getFullYear()+' T '+lcldate.getHours()+':'+lcldate.getMinutes()+':'+lcldate.getSeconds()
+          this.ListOfDesign[el].dateString = str;
+          
         }        
         pack.push(this.ListOfDesign[el]);
       }
-
+      
       pack.sort((a,b)=>{
         return (b.date - a.date);
       });

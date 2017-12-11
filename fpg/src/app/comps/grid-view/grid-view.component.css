@@ -7,7 +7,7 @@
     overflow: hidden;
     padding: 0px;
     transition: all 1s ease-in-out;
-    height: auto;
+    min-height: 100px;
     cursor: pointer;
 }
 

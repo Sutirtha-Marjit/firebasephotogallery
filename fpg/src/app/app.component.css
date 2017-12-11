@@ -5,3 +5,16 @@ nav{
     padding: 10px 5px;
     background: #1e7e34;
 }
+
+.color-box{
+width:18px;
+height:18px;
+background: #fafafa;
+border-style:solid;
+border-width: 1px;
+border-color: #ccc;
+border-radius: 700px;
+display: inline-block;
+margin-right: 6px;
+
+}

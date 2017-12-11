@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { DesignItem } from '../../shared/Datatypes';
-import {FormControl} from '@angular/forms'
+import { Location } from '@angular/common';
+import {FormControl} from '@angular/forms';
+import { Router  } from '@angular/router';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
 
@@ -15,10 +17,12 @@ export class GridViewComponent implements OnInit {
   public firebase:FireBase;
   public ListOfDesign:Array<any>=[];
   private FireBaseDataREF:any = null;
+  private router;
  
-  constructor(private http:HttpClient,private fbps:FireBasePropertiesService) {
+  constructor(private http:HttpClient,private fbps:FireBasePropertiesService, _router:Router,_location:Location) {
     var base = this;
-    this.firebase = fbps.getInstanceOfFireBase();
+    base.router = _router;
+    base.firebase = fbps.getInstanceOfFireBase();
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
 
     base.FireBaseDataREF.once('value').then(function(snapShot){
@@ -30,6 +34,10 @@ export class GridViewComponent implements OnInit {
         base.ListOfDesign = snapShot.val(); 
     });
 
+   }
+
+   openDetailPage(id){
+    this.router.navigate(['/detail-view/'+id]); 
    }
   
   public removeDesign(id:string){

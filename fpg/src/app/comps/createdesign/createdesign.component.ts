@@ -122,9 +122,12 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit 
 
   public postToFireBase(){
     if(this.UPDATE_MODE){
-      console.log('ready for UPDATE');
-      console.log(this.designItem); 
+      //console.log('ready for UPDATE');
+      //console.log(this.designItem); 
       var updates = {};
+      this.designItem.date = ((new Date()).getTime())+'';
+      console.log(this.designItem);
+      
       updates[this.UPDATE_ID] = this.designItem; 
       this.FireBaseDataREF.update(updates);
       window.location.href = '#/table-view';
@@ -149,9 +152,7 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit 
   }
 
   ngOnChanges(){
-      console.log('CREATE WINDOW');
-      console.log(this.UPDATE_MODE);
-      console.log(this.designItemToUpDate);
+      
       this.designItem = this.designItemToUpDate;
       if(this.designItemToUpDate.tags !== undefined){
         this.tempTagListString = this.designItemToUpDate.tags.join(',');
