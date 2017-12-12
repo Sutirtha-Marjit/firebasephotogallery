@@ -17,6 +17,7 @@ export class GridViewComponent implements OnInit {
   public firebase:FireBase;
   public ListOfDesign:Array<any>=[];
   private FireBaseDataREF:any = null;
+  public FireBaseDataLoaded:boolean = false;
   private router;
  
   constructor(private http:HttpClient,private fbps:FireBasePropertiesService, _router:Router,_location:Location) {
@@ -28,6 +29,7 @@ export class GridViewComponent implements OnInit {
     base.FireBaseDataREF.once('value').then(function(snapShot){
       console.log('once value event fired');
       base.ListOfDesign = snapShot.val(); 
+      base.FireBaseDataLoaded = true;
     });
 
     base.FireBaseDataREF.on('value',function(snapShot){

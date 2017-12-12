@@ -35,11 +35,16 @@
     </div>
   </div>
 </div>
-<div style="text-align:center;" *ngIf="ListOfDesign.length===0">
-     <hr/>
+
+<div style="text-align:center;" *ngIf="getRowPackets().length===0">
     <br/><br/>
-    <h3>No designs found!</h3>
-    <img style="width:150px;" src="assets/empty-box.png"/>
+    <div *ngIf="FireBaseDataLoaded">
+      <h3>No designs found!</h3>
+      <img style="width:150px;" src="assets/empty-box.png"/>
+    </div>
+    <div *ngIf="!FireBaseDataLoaded">
+        <img style="width:150px;" src="assets/preloader.gif"/>
+    </div>
   </div>
 
 <!--

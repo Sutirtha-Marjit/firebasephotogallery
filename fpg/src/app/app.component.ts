@@ -17,6 +17,10 @@ export class AppComponent  implements OnInit{
     this.fireBase.initializeApp(this.fireBaseConfig);
   }
 
+  onActivate(event:any){
+    console.log(event);
+  }
+
   ngOnInit() {
 
   }
