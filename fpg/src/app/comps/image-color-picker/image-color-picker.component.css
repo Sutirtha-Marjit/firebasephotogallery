@@ -1,0 +1,17 @@
+.pckdiv{
+    text-align: center;
+    margin-top:10px;
+}
+
+.status-box{
+    position: absolute;
+    width: 100px;
+    background:rgba(0,0,0,0.8);
+    border-radius: 8px;  
+    top:0px;
+    left: 0px;
+    color:#fff;
+    font-weight: bold;
+    padding: 10px;
+    transition: all 0.02s;
+}

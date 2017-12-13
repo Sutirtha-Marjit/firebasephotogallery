@@ -21,3 +21,8 @@ padding-top:50px;
     margin: 5px 10px 5px 0px; 
     
 }
+
+body.body-should-not-move{
+    overflow:hidden; 
+}
+

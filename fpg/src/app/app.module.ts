@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, RouterOutlet } from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
@@ -12,6 +12,7 @@ import { DetailViewComponent } from './comps/detail-view/detail-view.component';
 import {FireBasePropertiesService} from './services/fire-base-properties.service';
 import { DesignUploadComponent } from './comps/design-upload/design-upload.component';
 import { GarbageCleanUpComponent } from './comps/garbage-clean-up/garbage-clean-up.component';
+import { ImageColorPickerComponent } from './comps/image-color-picker/image-color-picker.component';
 
 const appRoutes: Routes =[
   {path:'create-new-design',component:CreatedesignComponent},
@@ -31,13 +32,14 @@ const appRoutes: Routes =[
     GridViewComponent,
     DetailViewComponent,
     DesignUploadComponent,
-    GarbageCleanUpComponent
+    GarbageCleanUpComponent,
+    ImageColorPickerComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes,{useHash:true})
+    RouterModule.forRoot(appRoutes,{useHash:true})    
   ],
   providers: [
     FireBasePropertiesService

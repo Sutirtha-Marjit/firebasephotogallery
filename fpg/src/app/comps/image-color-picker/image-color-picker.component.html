@@ -1,0 +1,13 @@
+<div class="pckdiv">
+  <div>
+    <h5 style="color:white">[ {{selectedColorList.length}} colors choosen ]</h5>
+    <div class="btn-group"><a class="btn btn-sm btn-success" (click)="jobDone(true)">Done!</a><a class="btn btn-sm btn-danger" (click)="jobDone(false)">Cancel</a></div><hr/>
+    <span (click)="removeColorFormList(clr)" *ngFor="let clr of selectedColorList" [ngStyle]="{backgroundColor:clr}" class="color-box" title="{{clr}}- Click to remove the color"></span>
+  </div>
+  <canvas (mousemove)="pickPixelMove($event)" (click)="pickPixel($event)" #colorPickerCanvas></canvas>
+  <div [ngStyle]="{top:moveStyleObj.top,left:moveStyleObj.left}"  class="status-box">{{moveStyleObj.top}} , {{moveStyleObj.left}}</div>
+</div>
+
+<!-- 
+  
+-->

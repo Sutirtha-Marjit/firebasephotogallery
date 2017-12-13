@@ -1,14 +1,14 @@
 <div class="container-fluid">
 <h2 class="pdT50">Create Design</h2>
-<span>{{UPDATE_ID}}</span>
 <div class="row">
     
 <div class="col">
     <p>Please remember if you enter wrong info, website will populate wrong information accordingly.  Understand each field carefully and insert correct data.</p>
     <form name="create-design">
         <div class="form-group" *ngIf="physicalImagePath">
-            <h5>Uploaded in this following place</h5>
-            <a href="{{physicalImagePath}}"><span class="text-primary">{{physicalImagePath}}</span></a>
+            <h5>Uploaded in this following ID and URI</h5>
+            <div><small class="text-success">[{{UPDATE_ID}}]</small></div>
+            <a href="{{physicalImagePath}}"><small class="text-primary">{{physicalImagePath}}</small></a>
         </div>
         <div *ngIf="imageSelected">
         <div class="form-group">
@@ -53,8 +53,15 @@
 </div>
 <div class="col selected-image" >
     <div>
-        <h2>{{designItem.heading}}</h2>    
-        <img *ngIf="modfPhysicalImagePath!==null" src="{{modfPhysicalImagePath}}" alt="Selected image" />    
+        <h2>{{designItem.heading}}</h2>
+        <div class="selected-main-image-container">    
+        <img *ngIf="modfPhysicalImagePath!==null" src="{{modfPhysicalImagePath}}" alt="Selected image" />
+        
+        <div class="btn-container"><a class="btn btn-dark" (click)="openColorPicker()">Open Color Picker</a></div> 
+        <div class="canvas-container" *ngIf="colorPickerOpen">
+            <app-image-color-picker (onColorPicked)="injectSelectedColors($event)"  [physicalImagePath]="physicalImagePath"></app-image-color-picker><!--testColorPath -->
+        </div>
+        </div>   
     </div>
 </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ElementRef, Renderer2, AfterViewInit, Input, Output, ViewChild} from '@angular/core';
+import { Component, OnInit, OnChanges, DoCheck, ElementRef, Renderer2, AfterViewInit, Input, Output, ViewChild} from '@angular/core';
 import { DesignItem, DesignImageUploadPack } from '../../shared/Datatypes';
 import { ActivatedRoute } from '@angular/router';
 import {FormControl} from '@angular/forms'
@@ -9,7 +9,7 @@ import {FireBasePropertiesService} from '../../services/fire-base-properties.ser
   templateUrl: './createdesign.component.html',
   styleUrls: ['./createdesign.component.css']
 })
-export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit {
+export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit, DoCheck {
 
   public designItem:DesignItem;
   public DesignType;
@@ -23,11 +23,12 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit 
   public localImageSource:string = '';
   public physicalImagePath = null;
   public modfPhysicalImagePath=""
+  public colorPickerOpen = false;
   private FireBaseDataREF:any = null;
   
   
  
-
+  public testColorPath = "assets/desert.jpg";
   private fileReader:FileReader;
   private testDefaultImageSource = "https://cdn.slidesharecdn.com/ss_thumbnails/ebr-issue4-2015-developing-an-operator-iot-ecosystem-170216165602-thumbnail-4.jpg?cb=1487264267";
 
@@ -59,6 +60,21 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit 
       base.updateLocalImageSource(e.target.result);
     };
     
+  }
+
+  injectSelectedColors(selectedColorList:Array<string>){
+    console.log(selectedColorList);
+    if(this.designItem.colors===undefined){
+      this.designItem.colors = [];
+    }
+    
+    this.designItem.colors = this.designItem.colors.concat(selectedColorList);
+    this.colorPickerOpen = false;
+    this.tempColorListString = this.designItem.colors.join(',');
+  }
+
+  openColorPicker(){
+    this.colorPickerOpen = true;
   }
 
   updateListOfTags(){
@@ -99,9 +115,6 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit 
 
   fillColorBoxes(){
 
-      
-      console.log("fillColorBoxes");
-      console.log(this.colorBoxContainer);
       if(this.colorBoxContainer!=null){
           this.colorBoxContainer.innerHTML="";
           this.designItem.colors.forEach((crBGcolor)=>{
@@ -152,7 +165,7 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit 
   }
 
   ngOnChanges(){
-      
+      console.log('ngOnChanges');
       this.designItem = this.designItemToUpDate;
       if(this.designItemToUpDate.tags !== undefined){
         this.tempTagListString = this.designItemToUpDate.tags.join(',');
@@ -163,12 +176,17 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit 
       
   }
 
+  ngDoCheck(){
+    // console.log('ngDoCheck');
+  }
+
   ngAfterViewInit(){
-    //console.log('ngAfterViewInit');
+    console.log('ngAfterViewInit');
     //console.log(this.rd);
     if(this.el){
       this.colorBoxContainer = this.el.nativeElement;
     }
+
     
   }
 

@@ -1,4 +1,5 @@
 import { Component , OnInit} from '@angular/core';
+import { RouterModule, Routes, RouterOutlet } from '@angular/router';
 import {FireBasePropertiesService} from './services/fire-base-properties.service';
 
 @Component({
