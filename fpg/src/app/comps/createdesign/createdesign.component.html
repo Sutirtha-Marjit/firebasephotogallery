@@ -6,8 +6,8 @@
     <p>Please remember if you enter wrong info, website will populate wrong information accordingly.  Understand each field carefully and insert correct data.</p>
     <form name="create-design">
         <div class="form-group" *ngIf="physicalImagePath">
-            <h5>Uploaded in this following ID and URI</h5>
-            <div><small class="text-success">[{{UPDATE_ID}}]</small></div>
+            <h5>Uploaded in this following <span *ngIf="UPDATE_ID">ID and</span> URI</h5>
+            <div *ngIf="UPDATE_ID"><small class="text-success">[{{UPDATE_ID}}]</small></div>
             <a href="{{physicalImagePath}}"><small class="text-primary">{{physicalImagePath}}</small></a>
         </div>
         <div *ngIf="imageSelected">

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, DoCheck, ElementRef, Renderer2, AfterViewInit, Input, Output, ViewChild} from '@angular/core';
-import { DesignItem, DesignImageUploadPack } from '../../shared/Datatypes';
+import { DesignItem, DesignImageUploadPack, SingleLogRow } from '../../shared/Datatypes';
 import { ActivatedRoute } from '@angular/router';
 import {FormControl} from '@angular/forms'
 import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
@@ -25,6 +25,7 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit,
   public modfPhysicalImagePath=""
   public colorPickerOpen = false;
   private FireBaseDataREF:any = null;
+  private FireBaseDesignUpdateLogREF:any = null;
   
   
  
@@ -43,18 +44,13 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit,
     var base = this;
     this.firebase = fbps.getInstanceOfFireBase();
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
-    /*base.FireBaseDataREF.on('value').then(function(snapshot){
-      console.log(snapshot.val());
-    });*/
-    
+    base.FireBaseDesignUpdateLogREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/log');
     
 
     this.fileReader = new FileReader();
-    this.DesignType = ["Poster","Website","App","Brochure","Postcard,Flyer","Logo", "Infographic", "Banner", "Business card", "Card or Invitation", "Stationery", "Facebook Cover" ];
-    
+    this.DesignType = ["Poster","Website","App","Brochure","Postcard,Flyer","Logo", "Infographic", "Banner", "Business card", "Card or Invitation", "Stationery", "Facebook Cover" ];   
 
     this.designItem = this.fbps.getABlankDesignItem();
-
     this.tempColorListString = this.designItem.colors.toString();
     this.fileReader.onload = function(e:any){      
       base.updateLocalImageSource(e.target.result);
@@ -134,34 +130,41 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit,
   }
 
   public postToFireBase(){
+    
+    let crlog:SingleLogRow = {desc:'',id:'',timestamp:(new Date()).getTime(),operation:''};
+
     if(this.UPDATE_MODE){
-      //console.log('ready for UPDATE');
-      //console.log(this.designItem); 
       var updates = {};
       this.designItem.date = ((new Date()).getTime())+'';
-      console.log(this.designItem);
-      
       updates[this.UPDATE_ID] = this.designItem; 
       this.FireBaseDataREF.update(updates);
+      crlog.operation = 'UPDATE';
+      crlog.id = this.UPDATE_ID;
       window.location.href = '#/table-view';
     }else{
-      console.log('ready for NEW POST');
-      console.log(this.designItem);
-      
+        crlog.operation = 'CREATE';
         this.FireBaseDataREF.push(this.designItem).then(()=>{
         window.location.href = '#/table-view';
       })
     }
      
+     this.FireBaseDesignUpdateLogREF.push(crlog).then(()=>{
+       console.log('log data pushed');
+     });
       
    
   }
 
-  onDesignSelectionComplete(pack:DesignImageUploadPack){
+  onDesignSelectionComplete(pack:DesignImageUploadPack){ 
+    
     this.imageSelected = true;
     this.physicalImagePath = pack.uploadedMainImageSource
     this.modfPhysicalImagePath = this.physicalImagePath+'?update='+this.fbps.getCacheClearingRandomNumber();
     this.designItem.file = this.physicalImagePath;
+    let crlog:SingleLogRow = {desc:'image uploaded at '+this.physicalImagePath,id:'',timestamp:(new Date()).getTime(),operation:'UPLOAD'};
+    this.FireBaseDesignUpdateLogREF.push(crlog).then(()=>{
+       console.log('log data pushed');
+     }); 
   }
 
   ngOnChanges(){

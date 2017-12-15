@@ -27,11 +27,8 @@ export interface DesignUpdatePatterns{
     
        MAIN_ONLY: string,
        THUMBNAIL_ONLY: string,
-       MAIN_AND_THUMB:string
-     
+       MAIN_AND_THUMB:string     
 }
-
-
 
 export interface ValidMappedDesignInage{
     main:string,
@@ -39,5 +36,12 @@ export interface ValidMappedDesignInage{
     mapped:boolean,
     mappedWith:string,
     onlyImagePath:string
+}
+
+export interface SingleLogRow{
+    desc:string,
+    timestamp:number,
+    id:string,
+    operation:string
 }
 

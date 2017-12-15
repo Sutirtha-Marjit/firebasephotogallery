@@ -27,6 +27,7 @@ export class TableViewComponent implements OnInit,OnChanges {
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
     base.cacheClearingRandomNumber = this.fbps.getCacheClearingRandomNumber();
     base.FireBaseDataREF.once('value').then(function(snapShot){
+      console.log(snapShot.val());
       base.ListOfDesign = snapShot.val();
       base.FireBaseDataLoaded = true;
              

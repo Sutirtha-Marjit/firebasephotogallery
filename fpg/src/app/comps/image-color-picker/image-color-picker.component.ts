@@ -34,6 +34,7 @@ export class ImageColorPickerComponent implements OnInit,OnChanges {
 
      imgEL.onerror = (err)=>{
        alert('Cross origin image is not allowed here.');
+       this.jobDone(false);
      };
 
      if(this.physicalImagePath!==null){
