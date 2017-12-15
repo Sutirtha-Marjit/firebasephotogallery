@@ -51,8 +51,11 @@ export class ImageColorPickerComponent implements OnInit,OnChanges {
   }
 
    public pickPixel(e:MouseEvent){
+     let lolcalXcor = e.pageX - this.canvas.offsetLeft;
+     let lolcalYcor = e.pageY - this.canvas.offsetTop;
      let ctx = this.canvas.getContext('2d');
-     let p = ctx.getImageData(e.pageX,e.pageY,1,1).data;
+     console.log(lolcalXcor+','+lolcalYcor);
+     let p = ctx.getImageData(lolcalXcor,lolcalYcor,1,1).data;
      var hex = "#" + ("000000" + this.rgbToHex(p[0], p[1], p[2])).slice(-6);
      if(this.selectedColorList.indexOf(hex)==-1){
        this.selectedColorList.push(hex);
@@ -79,7 +82,10 @@ export class ImageColorPickerComponent implements OnInit,OnChanges {
    }
 
    public pickPixelMove(e:MouseEvent){
-     this.positionStr = ""+e.pageX;
+
+     let lolcalXcor = e.pageX - this.canvas.offsetLeft;
+     let lolcalYcor = e.pageY - this.canvas.offsetTop;
+     this.positionStr = ""+lolcalXcor+","+lolcalYcor;
      let lVal = e.pageX+10,tVal = e.pageY+this.moveStyleObj.moveOffset;
 
      this.moveStyleObj.left = lVal+'px';

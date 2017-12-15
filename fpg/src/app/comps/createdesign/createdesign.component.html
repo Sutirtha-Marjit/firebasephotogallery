@@ -59,7 +59,7 @@
         
         <div class="btn-container"><a class="btn btn-dark" (click)="openColorPicker()">Open Color Picker</a></div> 
         <div class="canvas-container" *ngIf="colorPickerOpen">
-            <app-image-color-picker (onColorPicked)="injectSelectedColors($event)"  [physicalImagePath]="physicalImagePath"></app-image-color-picker><!--testColorPath -->
+            <app-image-color-picker (onColorPicked)="injectSelectedColors($event)"  [physicalImagePath]="physicalImagePath"></app-image-color-picker><!--physicalImagePath testColorPath -->
         </div>
         </div>   
     </div>
