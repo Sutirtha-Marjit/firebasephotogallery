@@ -13,13 +13,15 @@ import {FireBasePropertiesService} from './services/fire-base-properties.service
 import { DesignUploadComponent } from './comps/design-upload/design-upload.component';
 import { GarbageCleanUpComponent } from './comps/garbage-clean-up/garbage-clean-up.component';
 import { ImageColorPickerComponent } from './comps/image-color-picker/image-color-picker.component';
+import { ActivityLogComponent } from './comps/activity-log/activity-log.component';
 
 const appRoutes: Routes =[
   {path:'create-new-design',component:CreatedesignComponent},
   {path:'grid-view',component:GridViewComponent},
   {path:'table-view',component:TableViewComponent},
   {path:'detail-view/:id',component:DetailViewComponent},
-  {path:'garbage-cleanup',component:GarbageCleanUpComponent}
+  {path:'garbage-cleanup',component:GarbageCleanUpComponent},
+  {path:'activity-view',component:ActivityLogComponent}
 ];
 
 
@@ -33,7 +35,8 @@ const appRoutes: Routes =[
     DetailViewComponent,
     DesignUploadComponent,
     GarbageCleanUpComponent,
-    ImageColorPickerComponent
+    ImageColorPickerComponent,
+    ActivityLogComponent
   ],
   imports: [
     BrowserModule,

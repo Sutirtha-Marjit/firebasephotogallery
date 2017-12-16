@@ -10,7 +10,7 @@ import {FireBasePropertiesService} from '../../services/fire-base-properties.ser
 })
 export class DetailViewComponent implements OnInit {
 
-  private idToRequest:string='';
+  public idToRequest:string='';
   public firebase:FireBase;
   private FireBaseDataREF:any = null;
   private ObjectOfDesign = {};
