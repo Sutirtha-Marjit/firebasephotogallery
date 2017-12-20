@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, DoCheck, ElementRef, Renderer2, AfterView
 import { DesignItem, DesignImageUploadPack, SingleLogRow } from '../../shared/Datatypes';
 import { ActivatedRoute } from '@angular/router';
 import {FormControl} from '@angular/forms'
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {FireBasePropertiesService} from '../../services/fire-base-properties.service';
 
 @Component({
@@ -12,7 +13,7 @@ import {FireBasePropertiesService} from '../../services/fire-base-properties.ser
 export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit, DoCheck {
 
   public designItem:DesignItem;
-  public DesignType;
+  public DesignType:Array<string>=[];
   public firebase:FireBase;
   public tempColorListString:string;
   public tempTagListString:string;
@@ -40,16 +41,14 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit,
   @ViewChild('colorBoxContainer') el:ElementRef;
 
 
-  constructor(private fbps:FireBasePropertiesService, private route: ActivatedRoute,private rd:Renderer2) { 
+  constructor(private fbps:FireBasePropertiesService, private route: ActivatedRoute,private rd:Renderer2,private http:HttpClient) { 
     var base = this;
     this.firebase = fbps.getInstanceOfFireBase();
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
-    base.FireBaseDesignUpdateLogREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/log');
-    
+    base.FireBaseDesignUpdateLogREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/log');    
 
     this.fileReader = new FileReader();
-    this.DesignType = ["Poster","Website","App","Brochure","Postcard,Flyer","Logo", "Infographic", "Banner", "Business card", "Card or Invitation", "Stationery", "Facebook Cover" ];   
-
+    this.getListOfDesignTypes();
     this.designItem = this.fbps.getABlankDesignItem();
     this.tempColorListString = this.designItem.colors.toString();
     this.fileReader.onload = function(e:any){      
@@ -57,6 +56,19 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit,
     };
     
   }
+
+
+  private getListOfDesignTypes(){
+      var formdata = new FormData();      
+      formdata.append('auth-token',this.fbps.getPHPAuthToken());
+      formdata.append('action','TYPE_LIST');
+      
+      this.http.post(this.fbps.getDesignRootFolder()+'feed.php',formdata).subscribe((statusDataFirst)=>{
+               console.log(statusDataFirst);
+               this.DesignType = statusDataFirst['data'];
+      });
+  }
+  
 
   injectSelectedColors(selectedColorList:Array<string>){
     console.log(selectedColorList);
