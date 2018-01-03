@@ -14,8 +14,10 @@ import { DesignUploadComponent } from './comps/design-upload/design-upload.compo
 import { GarbageCleanUpComponent } from './comps/garbage-clean-up/garbage-clean-up.component';
 import { ImageColorPickerComponent } from './comps/image-color-picker/image-color-picker.component';
 import { ActivityLogComponent } from './comps/activity-log/activity-log.component';
+import { WelcomeComponent } from './comps/welcome/welcome.component';
 
 const appRoutes: Routes =[
+  {path:'',component:WelcomeComponent},
   {path:'create-new-design',component:CreatedesignComponent},
   {path:'grid-view',component:GridViewComponent},
   {path:'table-view',component:TableViewComponent},
@@ -36,7 +38,8 @@ const appRoutes: Routes =[
     DesignUploadComponent,
     GarbageCleanUpComponent,
     ImageColorPickerComponent,
-    ActivityLogComponent
+    ActivityLogComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,

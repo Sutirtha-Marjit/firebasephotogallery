@@ -18,14 +18,19 @@ export class ActivityLogComponent implements OnInit {
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/log');
 
     base.FireBaseDataREF.once('value').then(function(snapShot){
-      console.log(snapShot.val());
+      base.dataRecast(snapShot.val());
 
     });
 
    }
 
+   private dataRecast(rawData:any){
+     console.log(rawData);
+   }
+
   ngOnInit() {
-    //this.hc = window['Highcharts'];
+    this.hc = window['Highcharts'];
+    //console.log(this.hc);
   }
 
 }
