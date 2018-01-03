@@ -10,3 +10,7 @@
 .designEL-row:hover{
     background: #cccccc;
 }
+
+.tag-pr{
+    word-wrap: break-word;
+}
