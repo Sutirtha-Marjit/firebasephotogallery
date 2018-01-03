@@ -34,6 +34,12 @@ export class TableViewComponent implements OnInit,OnChanges {
     });
    }
 
+   public tagButtonTexts(str){
+     if(typeof str === "string"){
+       
+     }
+   }
+
    ngOnChanges(){
      this.cacheClearingRandomNumber = this.fbps.getCacheClearingRandomNumber();
    }

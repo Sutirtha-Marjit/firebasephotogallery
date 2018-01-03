@@ -5,6 +5,20 @@
     <a class="btn btn-success btn-sm">Step View</a>
     <a class="btn btn-success btn-sm">Chart View</a>
   </div>
-
+  <br/>
+  <div>
+    <br/><br/>
+    <table class="table">
+      <tbody>
+        <tr *ngFor="let dataEl of tray">
+          <td>{{getDateText(dataEl.timestamp)}}</td>
+          <td><span class="text-success">{{dataEl.operation}}</span></td>
+          <td>{{getTimeText(dataEl.timestamp)}}</td>
+        </tr>
+      </tbody>
+    </table>  
+    <a *ngIf="tray.length!==0" (click)="pushNext(5)" class="btn btn-sm btn-success">Load more</a>
+    <br/><br/><br/>
+  </div>
 </div>
 
