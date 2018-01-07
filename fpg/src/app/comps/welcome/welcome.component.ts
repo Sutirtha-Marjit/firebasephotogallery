@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WelcomeComponent implements OnInit {
 
-  constructor() { }
+  public baseImagePath:string;
+  constructor() { 
+    this.baseImagePath =  "assets/welcome01.jpg";
+  }
 
   ngOnInit() {
+
   }
 
 }

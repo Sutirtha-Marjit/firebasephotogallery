@@ -21,22 +21,26 @@ export class DetailViewComponent implements OnInit {
     var base = this;
     base.currentDesignItem = this.fbps.getABlankDesignItem();
     base.firebase = fbps.getInstanceOfFireBase();
+    if(this.firebase.database()){
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
-    
+    }
 
   }
 
   ngOnInit() {
     this.route.params.subscribe((params)=>{
       this.idToRequest = params['id'];
-      this.FireBaseDataREF.once('value').then((snapShot)=>{
-      this.ObjectOfDesign = snapShot.val();
-      //console.log(this.ObjectOfDesign[this.idToRequest]); 
-      this.currentDesignItem = this.ObjectOfDesign[this.idToRequest];
-      console.log('DESIGN ITEM:');
-      console.log(this.currentDesignItem);
-      this.teststr = 'GREAT';
-    });
+      if(this.FireBaseDataREF){
+          this.FireBaseDataREF.once('value').then((snapShot)=>{
+          this.ObjectOfDesign = snapShot.val();
+          //console.log(this.ObjectOfDesign[this.idToRequest]); 
+          this.currentDesignItem = this.ObjectOfDesign[this.idToRequest];
+          console.log('DESIGN ITEM:');
+          console.log(this.currentDesignItem);
+          this.teststr = 'GREAT';
+          });
+      }
+      
       
       
     })

@@ -24,17 +24,21 @@ export class GridViewComponent implements OnInit {
     var base = this;
     base.router = _router;
     base.firebase = fbps.getInstanceOfFireBase();
+    if(this.firebase.database()){
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
+    }
 
+    if(base.FireBaseDataREF){
     base.FireBaseDataREF.once('value').then(function(snapShot){
       console.log('once value event fired');
       base.ListOfDesign = snapShot.val(); 
       base.FireBaseDataLoaded = true;
     });
-
+    }
+    /*
     base.FireBaseDataREF.on('value',function(snapShot){
         base.ListOfDesign = snapShot.val(); 
-    });
+    });*/
 
    }
 

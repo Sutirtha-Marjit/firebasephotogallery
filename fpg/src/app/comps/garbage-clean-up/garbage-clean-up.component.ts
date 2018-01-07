@@ -24,7 +24,11 @@ export class GarbageCleanUpComponent implements OnInit {
     
     var base = this;    
     base.firebase = fbps.getInstanceOfFireBase();
-    base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
+    if(this.firebase.database()){
+      base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
+    }
+   if(base.FireBaseDataREF){
+    if(base.FireBaseDataREF.once){ 
     base.FireBaseDataREF.once('value').then((snapShot)=>{
     
     this.ListOfDesign = (()=>{
@@ -40,8 +44,8 @@ export class GarbageCleanUpComponent implements OnInit {
     
     this.getUpdatedListOfPhysicalImages();
     });
-
-
+    }
+   }
   }
 
   prepareList(){

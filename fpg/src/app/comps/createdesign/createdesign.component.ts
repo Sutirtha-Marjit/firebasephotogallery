@@ -39,14 +39,16 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit,
   @Input()UPDATE_MODE:boolean;
   @Input()UPDATE_ID:string;
   @ViewChild('colorBoxContainer') el:ElementRef;
-
+  
 
   constructor(private fbps:FireBasePropertiesService, private route: ActivatedRoute,private rd:Renderer2,private http:HttpClient) { 
     var base = this;
     this.firebase = fbps.getInstanceOfFireBase();
+    if(this.firebase.database()){
     base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
     base.FireBaseDesignUpdateLogREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/log');    
-
+    }
+    
     this.fileReader = new FileReader();
     this.getListOfDesignTypes();
     this.designItem = this.fbps.getABlankDesignItem();
@@ -64,7 +66,6 @@ export class CreatedesignComponent implements OnInit, OnChanges , AfterViewInit,
       formdata.append('action','TYPE_LIST');
       
       this.http.post(this.fbps.getDesignRootFolder()+'feed.php',formdata).subscribe((statusDataFirst)=>{
-               console.log(statusDataFirst);
                this.DesignType = statusDataFirst['data'];
       });
   }

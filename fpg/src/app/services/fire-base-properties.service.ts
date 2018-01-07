@@ -76,7 +76,26 @@ export class FireBasePropertiesService {
   }
 
   getInstanceOfFireBase():FireBase{
-    var fb:FireBase = window['firebase'];
+    var fb:FireBase = {
+      __esModule: false,
+     initializeApp: ()=>{},
+     app: ()=>{},
+     apps: [],
+     Promise: ()=>{},
+     SDK_VERSION: "",
+     INTERNAL: {},
+     default: {},
+     auth: ()=>{},
+     User: ()=>{},
+     database: ()=>{},
+     messaging: ()=>{},
+     storage: ()=>{},
+     };
+
+    if(window['firebase']){
+      fb = window['firebase'];
+    }
+    
     return fb;
   }
 

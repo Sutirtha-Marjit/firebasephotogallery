@@ -24,8 +24,12 @@ export class TableViewComponent implements OnInit,OnChanges {
     var base = this;
     base.router = _router;
     base.firebase = fbps.getInstanceOfFireBase();
-    base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
+    if(this.firebase.database()){
+        base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/data');
+    }
     base.cacheClearingRandomNumber = this.fbps.getCacheClearingRandomNumber();
+    
+    if(base.FireBaseDataREF){
     base.FireBaseDataREF.once('value').then(function(snapShot){
       console.log(snapShot.val());
       base.ListOfDesign = snapShot.val();
@@ -33,7 +37,7 @@ export class TableViewComponent implements OnInit,OnChanges {
              
     });
    }
-
+  }
    public tagButtonTexts(str){
      if(typeof str === "string"){
        

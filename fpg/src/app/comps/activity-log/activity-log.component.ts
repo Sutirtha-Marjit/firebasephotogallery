@@ -15,16 +15,18 @@ export class ActivityLogComponent implements OnInit {
   public tray=[];
   public months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   
-  constructor(private fbps:FireBasePropertiesService) {
+  constructor(private fbps: FireBasePropertiesService) {
     let base = this;
     base.firebase = fbps.getInstanceOfFireBase();
-    base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1)+'/log');
-
-    base.FireBaseDataREF.once('value').then(function(snapShot){
-      base.dataRecast(snapShot.val());
-    });
-
-   }
+    if (this.firebase.database()) {
+        base.FireBaseDataREF = this.firebase.database().ref(this.fbps.getRefString(1) + '/log');
+    }
+    if (base.FireBaseDataREF) {
+        base.FireBaseDataREF.once('value').then(function(snapShot) {
+            base.dataRecast(snapShot.val());
+        });
+    }
+}
 
    private dataRecast(rawData:any){
      
